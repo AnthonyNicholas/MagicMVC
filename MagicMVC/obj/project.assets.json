@@ -13132,11 +13132,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Antman\\source\\repos\\MagicMVC\\Lecture6\\MagicMVC.csproj",
+      "projectUniqueName": "C:\\Users\\Antman\\source\\repos\\MagicMVC\\MagicMVC\\MagicMVC.csproj",
       "projectName": "MagicMVC",
-      "projectPath": "C:\\Users\\Antman\\source\\repos\\MagicMVC\\Lecture6\\MagicMVC.csproj",
+      "projectPath": "C:\\Users\\Antman\\source\\repos\\MagicMVC\\MagicMVC\\MagicMVC.csproj",
       "packagesPath": "C:\\Users\\Antman\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Antman\\source\\repos\\MagicMVC\\Lecture6\\obj\\",
+      "outputPath": "C:\\Users\\Antman\\source\\repos\\MagicMVC\\MagicMVC\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

@@ -9,3 +9,14 @@ C:\Users\Antman\source\repos\MagicMVC\Lecture6\obj\Debug\netcoreapp2.0\MagicMVC.
 C:\Users\Antman\source\repos\MagicMVC\Lecture6\obj\Debug\netcoreapp2.0\MagicMVC.AssemblyInfo.cs
 C:\Users\Antman\source\repos\MagicMVC\Lecture6\obj\Debug\netcoreapp2.0\MagicMVC.dll
 C:\Users\Antman\source\repos\MagicMVC\Lecture6\obj\Debug\netcoreapp2.0\MagicMVC.pdb
+C:\Users\Antman\source\repos\MagicMVC\MagicMVC\bin\Debug\netcoreapp2.0\MagicMVC.deps.json
+C:\Users\Antman\source\repos\MagicMVC\MagicMVC\bin\Debug\netcoreapp2.0\MagicMVC.runtimeconfig.json
+C:\Users\Antman\source\repos\MagicMVC\MagicMVC\bin\Debug\netcoreapp2.0\MagicMVC.runtimeconfig.dev.json
+C:\Users\Antman\source\repos\MagicMVC\MagicMVC\bin\Debug\netcoreapp2.0\MagicMVC.dll
+C:\Users\Antman\source\repos\MagicMVC\MagicMVC\bin\Debug\netcoreapp2.0\MagicMVC.pdb
+C:\Users\Antman\source\repos\MagicMVC\MagicMVC\obj\Debug\netcoreapp2.0\MagicMVC.csprojResolveAssemblyReference.cache
+C:\Users\Antman\source\repos\MagicMVC\MagicMVC\obj\Debug\netcoreapp2.0\MagicMVC.csproj.CoreCompileInputs.cache
+C:\Users\Antman\source\repos\MagicMVC\MagicMVC\obj\Debug\netcoreapp2.0\MagicMVC.AssemblyInfoInputs.cache
+C:\Users\Antman\source\repos\MagicMVC\MagicMVC\obj\Debug\netcoreapp2.0\MagicMVC.AssemblyInfo.cs
+C:\Users\Antman\source\repos\MagicMVC\MagicMVC\obj\Debug\netcoreapp2.0\MagicMVC.dll
+C:\Users\Antman\source\repos\MagicMVC\MagicMVC\obj\Debug\netcoreapp2.0\MagicMVC.pdb

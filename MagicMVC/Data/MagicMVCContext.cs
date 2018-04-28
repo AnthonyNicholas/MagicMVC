@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MagicMVC.Models;
 
 namespace MagicMVC.Models
 {
@@ -16,5 +17,7 @@ namespace MagicMVC.Models
         {
             modelBuilder.Entity<StoreInventory>().HasKey(x => new { x.StoreID, x.ProductID });
         }
+
+        public DbSet<MagicMVC.Models.StoreInventory> StoreInventory { get; set; }
     }
 }
