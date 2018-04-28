@@ -1,7 +1,7 @@
 ﻿using System.Web;
 using System.Web.Mvc;
 
-namespace MagicMVC
+namespace Standard_VS_MVC_Project
 {
     public class FilterConfig
     {

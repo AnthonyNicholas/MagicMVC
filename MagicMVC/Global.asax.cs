@@ -6,7 +6,7 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 
-namespace MagicMVC
+namespace Standard_VS_MVC_Project
 {
     public class MvcApplication : System.Web.HttpApplication
     {
