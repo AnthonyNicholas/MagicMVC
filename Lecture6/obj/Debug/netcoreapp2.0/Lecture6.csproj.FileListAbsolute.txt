@@ -1,0 +1,11 @@
+C:\Users\Antman\source\repos\MagicMVC\Lecture6\bin\Debug\netcoreapp2.0\Lecture6.deps.json
+C:\Users\Antman\source\repos\MagicMVC\Lecture6\bin\Debug\netcoreapp2.0\Lecture6.runtimeconfig.json
+C:\Users\Antman\source\repos\MagicMVC\Lecture6\bin\Debug\netcoreapp2.0\Lecture6.runtimeconfig.dev.json
+C:\Users\Antman\source\repos\MagicMVC\Lecture6\bin\Debug\netcoreapp2.0\Lecture6.dll
+C:\Users\Antman\source\repos\MagicMVC\Lecture6\bin\Debug\netcoreapp2.0\Lecture6.pdb
+C:\Users\Antman\source\repos\MagicMVC\Lecture6\obj\Debug\netcoreapp2.0\Lecture6.csprojResolveAssemblyReference.cache
+C:\Users\Antman\source\repos\MagicMVC\Lecture6\obj\Debug\netcoreapp2.0\Lecture6.csproj.CoreCompileInputs.cache
+C:\Users\Antman\source\repos\MagicMVC\Lecture6\obj\Debug\netcoreapp2.0\Lecture6.AssemblyInfoInputs.cache
+C:\Users\Antman\source\repos\MagicMVC\Lecture6\obj\Debug\netcoreapp2.0\Lecture6.AssemblyInfo.cs
+C:\Users\Antman\source\repos\MagicMVC\Lecture6\obj\Debug\netcoreapp2.0\Lecture6.dll
+C:\Users\Antman\source\repos\MagicMVC\Lecture6\obj\Debug\netcoreapp2.0\Lecture6.pdb
