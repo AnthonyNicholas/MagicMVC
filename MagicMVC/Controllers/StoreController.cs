@@ -21,18 +21,17 @@ namespace MagicMVC.Controllers
             _context = context;
         }
 
-        // GET: Store
-        public async Task<IActionResult> Index(int storeID = 1)
+        // GET: Store Index - shows inventory for given store.  Default is CBD store (StoreID = 1).  Other stores'
+        //inventories can be accessed by passing in their IDs as parameters in url eg Store/index/2
+
+        public async Task<IActionResult> Index(int id = 1)
         {
             // Eager loading the Product table - join between StoreInventory and the Product table.
-            var storeQuery = await _context.Stores.Where(s => s.StoreID == storeID).ToListAsync();
+            var storeQuery = await _context.Stores.Where(s => s.StoreID == id).ToListAsync();
 
             var store = storeQuery.First();
 
-            //var productQuery = 
-            //    _context.StoreInventory.Include(x => x.Product).Select(x => x);
-            //var magicMVCContext = _context.StoreInventory.Include(s => s.Product).Include(s => s.Store);
-
+            var productQuery = _context.StoreInventory.Include(x => x.Product).Where(p => p.StoreID == id);
 
             //if (storeID != 0)
             //{
@@ -50,7 +49,7 @@ namespace MagicMVC.Controllers
             //query = query.OrderBy(x => x.Product.Name);
 
             // Passing a List<OwnerInventory> model object to the View.
-            return View(store.StoreInventory);
+            return View(await productQuery.ToListAsync());
         }
 
         // GET: Store/Details/5
