@@ -9,6 +9,9 @@ using MagicMVC.Models;
 
 namespace MagicMVC.Controllers
 {
+
+    // StoreController: Franchisee needs to see stock & be able to make stock requests
+
     public class StoreController : Controller
     {
         private readonly MagicMVCContext _context;
@@ -19,10 +22,35 @@ namespace MagicMVC.Controllers
         }
 
         // GET: Store
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int storeID = 1)
         {
-            var magicMVCContext = _context.StoreInventory.Include(s => s.Product).Include(s => s.Store);
-            return View(await magicMVCContext.ToListAsync());
+            // Eager loading the Product table - join between StoreInventory and the Product table.
+            var storeQuery = await _context.Stores.Where(s => s.StoreID == storeID).ToListAsync();
+
+            var store = storeQuery.First();
+
+            //var productQuery = 
+            //    _context.StoreInventory.Include(x => x.Product).Select(x => x);
+            //var magicMVCContext = _context.StoreInventory.Include(s => s.Product).Include(s => s.Store);
+
+
+            //if (storeID != 0)
+            //{
+            //    // Adding a where to the query to filter the data.
+            //    // Note for the first request productName is null thus the where is not always added.
+            //    query = query.Where(x => x.StoreID.Equals(storeID));
+            //    //Product.Name.Contains(productName));
+            //    //query = query.Where(x => x.Product.Name.Contains(productName));
+
+            //    // Storing the search into ViewBag to populate the textbox with the same value for convenience.
+            //    ViewBag.ProductName = productName;
+            //}
+
+            // Adding an order by to the query for the Product name.
+            //query = query.OrderBy(x => x.Product.Name);
+
+            // Passing a List<OwnerInventory> model object to the View.
+            return View(store.StoreInventory);
         }
 
         // GET: Store/Details/5
