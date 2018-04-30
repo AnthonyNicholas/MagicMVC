@@ -125,7 +125,7 @@ namespace MagicMVC.Models
                     {
                         Name = "Melbourne CBD",
                         //StoreID = 0,
-                        StoreInventory =
+                        StoreInventoryList =
                         {
                             new StoreInventory
                             {
@@ -183,7 +183,7 @@ namespace MagicMVC.Models
                     {
                         Name = "North Melbourne",
                         //StoreID = 1,
-                        StoreInventory =
+                        StoreInventoryList =
                         {
                             new StoreInventory
                             {
@@ -196,7 +196,7 @@ namespace MagicMVC.Models
                     {
                         Name = "East Melbourne",
                         //StoreID = 2,
-                        StoreInventory =
+                        StoreInventoryList =
                         {
                             new StoreInventory
                             {
@@ -209,7 +209,7 @@ namespace MagicMVC.Models
                     {
                         Name = "South Melbourne",
                         //StoreID = 3,
-                        StoreInventory =
+                        StoreInventoryList =
                         {
                             new StoreInventory
                             {

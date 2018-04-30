@@ -6,7 +6,12 @@ namespace MagicMVC.Models
     {
         public int StoreID { get; set; }
         public string Name { get; set; }
+        public ICollection<StoreInventory> StoreInventoryList { get; } = new List<StoreInventory>();
+        public ICollection<StockRequest> StockRequestList { get; set; } = new List<StockRequest>();
 
-        public ICollection<StoreInventory> StoreInventory { get; } = new List<StoreInventory>();
+        public StoreInventory GetStoreInventory(int productID)
+        {
+            return StoreInventoryList.GetStoreInventory(productID);
+        }
     }
 }

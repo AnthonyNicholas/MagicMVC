@@ -2,14 +2,16 @@
 {
     public class StockRequest
     {
+        private readonly MagicMVCContext _context;
+
         public int StockRequestID { get; set; }
-
         public int StoreID { get; set; }
-        public Store Store { get; set; }
-
         public int ProductID { get; set; }
-        public Product Product { get; set; }
-
         public int Quantity { get; set; }
+
+        public Store Store { get; set; }
+        public StoreInventory StoreInventory { get; set; }
+        public Product Product { get; set; }
     }
 }
+
