@@ -23,8 +23,8 @@ namespace MagicMVC.Controllers
         {
             //var productQuery = _context.StoreInventory.Include(x => x.Product).Where(p => p.StoreID == id);
 
-            var magicMVCContext = _context.StoreInventory.Include(s => s.Product).Include(s => s.Store).Where(p => p.StoreID == id);
-            return View(await magicMVCContext.ToListAsync());
+            var productQuery = _context.StoreInventory.Include(s => s.Product).Include(s => s.Store).Where(p => p.StoreID == id);
+            return View(await productQuery.ToListAsync());
         }
 
         // GET: Customer/Purchase/5
