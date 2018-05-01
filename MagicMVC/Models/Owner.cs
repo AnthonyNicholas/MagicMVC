@@ -2,60 +2,95 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MagicMVC.Models
 {
-    //Owner class - Is not one of the classes being managed by Entity Framework.  
-    // THerefore we can access and use the context within in [I assume??]
+    // Owner class
+    // Note - this is not one of the classes being managed by Entity Framework.  
+    // Rather reflects object oriented design & logic sitting with model rather than in
+    // controller.
 
     public class Owner
     {
         private readonly MagicMVCContext _context;
-        public List<OwnerInventory> OwnerInventoryList { get; set; }
-        public ICollection<StockRequest> StockRequestList { get; set; } = new List<StockRequest>();
+        //public List<OwnerInventory> OwnerInventoryList { get; set; }
+        //public ICollection<StockRequest> StockRequestList { get; set; } = new List<StockRequest>();
 
         public Owner(MagicMVCContext context)
         {
             _context = context;
         }
 
-        public OwnerInventory GetOwnerInventory(int productID)
-        {
-            return OwnerInventoryList.GetOwnerInventory(productID);
+        public async Task<List<OwnerInventory>> GetOwnerInventory()
+        { 
+            var query = _context.OwnerInventory.Include(x => x.Product).Select(x => x);
+            query = query.OrderBy(x => x.Product.Name);
+            return (await query.ToListAsync());
         }
 
-        public bool IsStockAvailable(StockRequest s)
+        public async Task<List<OwnerInventory>> GetOwnerInventory(int productID)
         {
-            OwnerInventory item = GetOwnerInventory(s.ProductID);
+            var test = _context.OwnerInventory.First(); 
+
+            var query = _context.OwnerInventory                 
+                            .Include(x => x.Product)
+                            .Where(x => x.ProductID == productID); //Throws exception here
+            var list = await query.ToListAsync();
+
+            return list;
+        }
+
+        public async Task<List<OwnerInventory>> GetOwnerInventory(string productName)
+        {
+            var query = _context.OwnerInventory
+                            .Include(x => x.Product)
+                            .Where(x => x.Product.Name.Contains(productName));
+            return await query.ToListAsync();
+        }
+
+
+        public async Task<bool> IsStockAvailable(StockRequest s)
+        {
+            var query = await GetOwnerInventory(s.ProductID);  //Throws exception here
+            OwnerInventory item = query.First();
+            var test = item.StockLevel;
             return item.StockLevel >= s.Quantity;
         }
 
-        public void PerformStockRequest(StockRequest s)
+        public async Task PerformStockRequest(StockRequest s)
         {
-            if (!IsStockAvailable(s))
+            //Franchisee franchisee = new Franchisee(_context, s.StoreID);
+
+            var ownerItem = await _context.OwnerInventory.
+                                    SingleOrDefaultAsync(r => r.ProductID == s.ProductID);
+
+            var storeItem = await _context.StoreInventory.
+                                    Where(r => r.StoreID == r.StoreID).
+                                    SingleOrDefaultAsync(r => r.ProductID == s.ProductID);
+
+            //Add product to store if not currently in Inventory.
+            if (storeItem == null)
             {
-                throw new InvalidOperationException();
-            }
 
-            //Decrease owner product stock level.
-            OwnerInventory owner_item = GetOwnerInventory(s.ProductID);
-            owner_item.StockLevel -= s.Quantity;
-
-            StoreInventory store_item = s.Store.GetStoreInventory(s.ProductID);
-
-            if (store_item == null)
-            {
-                //Add product to store.
-                s.Store.StoreInventoryList.Add(new StoreInventory { StoreID = s.StoreID, ProductID = s.ProductID, StockLevel = s.Quantity });
+                StoreInventory item = new StoreInventory {StoreID = s.StoreID, ProductID = s.ProductID, StockLevel = s.Quantity };
+                _context.StoreInventory.Add(item);
+                await _context.SaveChangesAsync();
             }
             else
             {
-                //Increase store product stock level.
-                store_item.StockLevel += s.Quantity;
+                storeItem.StockLevel += s.Quantity;
             }
 
-            //Remove stock request from system.
-            this.StockRequestList.Remove(s);
-          }
+            //Decrease owner product stock level.
+            ownerItem.StockLevel -= s.Quantity;
+
+            // Remove stock request
+            _context.StockRequests.Remove(s);
+
+            await _context.SaveChangesAsync();
+        }
     }
 }

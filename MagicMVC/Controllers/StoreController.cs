@@ -15,41 +15,41 @@ namespace MagicMVC.Controllers
     public class StoreController : Controller
     {
         private readonly MagicMVCContext _context;
+        private Franchisee franchisee;
 
         public StoreController(MagicMVCContext context)
         {
             _context = context;
+            
         }
 
         // GET: Store Index - shows inventory for given store.  Default is CBD store (StoreID = 1).  Other stores'
         //inventories can be accessed by passing in their IDs as parameters in url eg Store/index/2
 
-        public async Task<IActionResult> Index(int id = 1)
+        public async Task<IActionResult> Index(string productName, int id = 1)
         {
+            franchisee = new Franchisee(_context, id);
+            Store testStore = await franchisee.GetStore();
+            List<StoreInventory> inventory = await franchisee.GetStoreInventory();
+            
             // Eager loading the Product table - join between StoreInventory and the Product table.
-            var storeQuery = await _context.Stores.Where(s => s.StoreID == id).ToListAsync();
-
-            var store = storeQuery.First();
+            //var storeQuery = await _context.Stores.Where(s => s.StoreID == id).ToListAsync();
+            //var store = storeQuery.First();
 
             var productQuery = _context.StoreInventory.Include(x => x.Product).Where(p => p.StoreID == id);
 
-            //if (storeID != 0)
-            //{
-            //    // Adding a where to the query to filter the data.
-            //    // Note for the first request productName is null thus the where is not always added.
-            //    query = query.Where(x => x.StoreID.Equals(storeID));
-            //    //Product.Name.Contains(productName));
-            //    //query = query.Where(x => x.Product.Name.Contains(productName));
+            if (!string.IsNullOrWhiteSpace(productName))
+            {
+                inventory = await franchisee.GetStoreInventory(productName);
 
-            //    // Storing the search into ViewBag to populate the textbox with the same value for convenience.
-            //    ViewBag.ProductName = productName;
-            //}
+                // Storing the search into ViewBag to populate the textbox with the same value for convenience.
+                ViewBag.ProductName = productName;
+            }
 
-            // Adding an order by to the query for the Product name.
-            //query = query.OrderBy(x => x.Product.Name);
 
-            // Passing a List<OwnerInventory> model object to the View.
-            return View(await productQuery.ToListAsync());
+            //Passing a List<OwnerInventory> model object to the View.
+
+            return View(inventory);
         }
 
         // GET: Store/Details/5

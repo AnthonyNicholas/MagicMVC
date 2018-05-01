@@ -7,15 +7,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MagicMVC.Models;
 
+
 namespace MagicMVC.Controllers
 {
     public class StockRequestsController : Controller
     {
         private readonly MagicMVCContext _context;
+        private Owner owner;
 
         public StockRequestsController(MagicMVCContext context)
         {
             _context = context;
+            owner = new Owner(_context);
+
         }
 
         // GET: StockRequests
@@ -151,8 +155,16 @@ namespace MagicMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var stockRequest = await _context.StockRequests.SingleOrDefaultAsync(m => m.StockRequestID == id);
-            _context.StockRequests.Remove(stockRequest);
+            StockRequest s = await _context.StockRequests.SingleOrDefaultAsync(m => m.StockRequestID == id);
+
+            bool available = await owner.IsStockAvailable(s);
+
+            if (available)
+            {
+                //_context.StockRequests.Remove(s);
+                await owner.PerformStockRequest(s);
+            }
+            //_context.StockRequests.Remove(stockRequest);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
