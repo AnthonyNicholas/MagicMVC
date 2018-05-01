@@ -11,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using MagicMVC.Data;
 using MagicMVC.Models;
 using MagicMVC.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Rewrite;
 
 namespace MagicMVC
 {
@@ -26,20 +28,34 @@ namespace MagicMVC
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<MagicMVCContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.Configure<MvcOptions>(options =>
+            {
+                options.Filters.Add(new RequireHttpsAttribute());
+            });
 
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(Configuration.GetConnectionString("MagicMVCContext")));
+
+            services.AddDbContext<MagicMVCContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("MagicMVCContext")));
+
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
+            
+
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
 
             services.AddMvc();
+
+            services.AddAuthentication().AddGoogle(googleOptions =>
+            {
+                googleOptions.ClientId = Configuration["Authentication:Google:ClientId"];
+                googleOptions.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -66,6 +82,8 @@ namespace MagicMVC
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            app.UseRewriter(new RewriteOptions().AddRedirectToHttps());
         }
     }
 }
