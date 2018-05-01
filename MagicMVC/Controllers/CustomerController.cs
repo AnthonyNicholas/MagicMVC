@@ -28,14 +28,16 @@ namespace MagicMVC.Controllers
         }
 
         // GET: Customer/Purchase/5
-        public async Task<IActionResult> Purchase(int? id)
+        public async Task<IActionResult> Purchase(int ProductID, int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var storeInventory = await _context.StoreInventory.SingleOrDefaultAsync(m => m.StoreID == id);
+            var storeInventory = await _context.StoreInventory
+                                    .Where(r => r.ProductID == ProductID)
+                                     .SingleOrDefaultAsync(m => m.StoreID == id);
             if (storeInventory == null)
             {
                 return NotFound();

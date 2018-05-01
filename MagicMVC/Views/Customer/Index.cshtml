@@ -59,7 +59,7 @@
                 @Html.DisplayFor(modelItem => item.StockLevel)
             </td>
             <td>
-                @Html.ActionLink("Purchase", "Purchase", new { /* id=item.PrimaryKey */ })
+                @Html.ActionLink("Purchase", "Purchase", new { ProductID = item.ProductID, id=item.StoreID })
             </td>
         </tr>
         }
