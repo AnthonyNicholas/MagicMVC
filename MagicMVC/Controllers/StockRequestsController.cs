@@ -25,8 +25,27 @@ namespace MagicMVC.Controllers
         // GET: StockRequests
         public async Task<IActionResult> Index()
         {
-            var magicMVCContext = _context.StockRequests.Include(s => s.Product).Include(s => s.Store);
-            return View(await magicMVCContext.ToListAsync());
+            //var query = _context.StockRequests.Include(s => s.Product).Include(s => s.Store);
+            var query =
+                from r in _context.StockRequests
+                join o in _context.OwnerInventory on r.ProductID equals o.ProductID
+                join p in _context.Products on r.ProductID equals p.ProductID
+                join s in _context.Stores on r.StoreID equals s.StoreID
+                select new StockRequestOwnerView {
+                    StockRequestID = r.StockRequestID,
+                    StoreName = s.Name,
+                    ProductName = p.Name,
+                    Quantity = r.Quantity,
+                    StockLevel = o.StockLevel,
+                    Availability = (r.Quantity <= o.StockLevel)
+                };
+
+                //_context.StockRequests
+                //            .Join(_context.OwnerInventory, x => x.ProductID, y => y.ProductID, (x, y) => x)
+                //            .Include(r => r.OwnerInventory)
+                //            .Include(r => r.Product)
+                //            .Include(r => r.Store);
+            return View(await query.ToListAsync());
         }
 
         // GET: StockRequests/Details/5

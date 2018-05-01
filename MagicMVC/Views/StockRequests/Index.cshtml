@@ -1,4 +1,4 @@
-﻿@model IEnumerable<MagicMVC.Models.StockRequest>
+﻿@model IEnumerable<MagicMVC.Models.StockRequestOwnerView>
 
 @{
     ViewData["Title"] = "Stock Request Index";
@@ -12,14 +12,23 @@
 <table class="table">
     <thead>
         <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Quantity)
-                </th>
             <th>
-                @Html.DisplayNameFor(model => model.Product)
+                @Html.DisplayNameFor(model => model.StockRequestID)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Store)
+                @Html.DisplayNameFor(model => model.StoreName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StockLevel)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Availability)
             </th>
             <th></th>
         </tr>
@@ -28,18 +37,25 @@
 @foreach (var item in Model) {
         <tr>
             <td>
+                @Html.DisplayFor(modelItem => item.StockRequestID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StoreName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductName)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Quantity)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Product.ProductID)
+                @Html.DisplayFor(modelItem => item.StockLevel)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Store.StoreID)
+                @Html.DisplayFor(modelItem => item.Availability)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.StockRequestID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.StockRequestID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.StockRequestID">Delete</a>
+                <a asp-action="Delete" asp-route-id="@item.StockRequestID">Process StockRequest</a>
             </td>
         </tr>
 }
