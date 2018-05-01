@@ -32,6 +32,8 @@ namespace MagicMVC
             {
                 options.Filters.Add(new RequireHttpsAttribute());
             });
+            services.AddDbContext<MagicMVCContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("MagicMVCContext")));

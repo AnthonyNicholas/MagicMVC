@@ -1,4 +1,5 @@
 ﻿using System;
+using MagicMVC.Models;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace MagicMVC
 {
@@ -14,6 +16,24 @@ namespace MagicMVC
     {
         public static void Main(string[] args)
         {
+            var host = BuildWebHost(args);
+
+                        using(var scope = host.Services.CreateScope())
+                        {
+                            var services = scope.ServiceProvider;
+
+                            try
+                            {
+                                SeedData.Initialize(services);
+                            }
+                            catch(Exception ex)
+                            {
+                                var logger = services.GetRequiredService<ILogger<Program>>();
+                                logger.LogError(ex, "An error occurred seeding the DB.");
+                            }
+                        }
+
+
             BuildWebHost(args).Run();
         }
 
