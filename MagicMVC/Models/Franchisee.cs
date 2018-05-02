@@ -16,9 +16,9 @@ namespace MagicMVC.Models
     public class Franchisee
     {
         private readonly MagicMVCContext _context;
-        private int storeID;
+        public int storeID { get; set; }
 
-        public Franchisee(MagicMVCContext context, int storeID)
+        public Franchisee(MagicMVCContext context, int storeID = 1)
         {
             _context = context;
             this.storeID = storeID;
@@ -58,6 +58,13 @@ namespace MagicMVC.Models
             return await query.ToListAsync();
         }
 
+        public async Task<bool> StoreInventoryExists(int productID)
+        {
+            return _context.StoreInventory
+                            .Where(x => x.StoreID == this.storeID)
+                            .Any(e => e.ProductID == productID);
+        }
+
         public async Task AddItemToStoreInventory(StockRequest s)
         {
             //Add item to storeInventory
@@ -66,6 +73,26 @@ namespace MagicMVC.Models
             this._context.SaveChanges();
             return;
         }
+
+        public async Task ProcessSale(Purchase p)
+        {
+            StoreInventory item = (await GetStoreInventory(p.ProductID)).First();
+
+            if (item.StockLevel < p.QuantityToPurchase)
+            {
+                throw new Exception("Insufficient Stock to make that purchase");
+                //Send to error
+                //Console.WriteLine($"{product.Name} has no stock available.");
+            }
+            else
+            {
+                item.StockLevel -= p.QuantityToPurchase;
+                _context.Update(item);
+                await _context.SaveChangesAsync();
+                //Confirm purchase on screen
+            }
+        }
+
 
 
         //public async void MakeStockRequest(StockRequest s)

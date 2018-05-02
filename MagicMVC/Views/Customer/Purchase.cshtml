@@ -1,4 +1,5 @@
-﻿@model MagicMVC.Models.StoreInventory
+﻿@model MagicMVC.Models.Purchase
+
 
 @{
     ViewData["Title"] = "Purchase";
@@ -15,9 +16,9 @@
             <input type="hidden" asp-for="StoreID" />
             <input type="hidden" asp-for="ProductID" />
             <div class="form-group">
-                <label asp-for="StockLevel" class="control-label"></label>
-                <input asp-for="StockLevel" class="form-control" />
-                <span asp-validation-for="StockLevel" class="text-danger"></span>
+                <label asp-for="QuantityToPurchase" class="control-label"></label>
+                <input asp-for="QuantityToPurchase" class="form-control" />
+                <span asp-validation-for="QuantityToPurchase" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Purchase" class="btn btn-default" />

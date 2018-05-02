@@ -30,7 +30,7 @@ namespace MagicMVC.Controllers
                 join o in _context.OwnerInventory on r.ProductID equals o.ProductID
                 join p in _context.Products on r.ProductID equals p.ProductID
                 join s in _context.Stores on r.StoreID equals s.StoreID
-                select new StockRequestOwnerView {
+                select new StockRequestOwnerViewModel {
                     StockRequestID = r.StockRequestID,
                     StoreName = s.Name,
                     ProductName = p.Name,
