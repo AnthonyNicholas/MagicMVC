@@ -12,10 +12,12 @@ namespace MagicMVC.Controllers
     public class CustomerController : Controller
     {
         private readonly MagicMVCContext _context;
+        Customer customer;
 
         public CustomerController(MagicMVCContext context)
         {
             _context = context;
+            customer = new Customer(_context);
         }
 
         // GET: Customer
@@ -38,6 +40,7 @@ namespace MagicMVC.Controllers
             var storeInventory = await _context.StoreInventory
                                     .Where(r => r.ProductID == ProductID)
                                      .SingleOrDefaultAsync(m => m.StoreID == id);
+
             if (storeInventory == null)
             {
                 return NotFound();
@@ -63,6 +66,7 @@ namespace MagicMVC.Controllers
             {
                 try
                 {
+                    await customer.PurchaseProduct(storeInventory, id);
                     _context.Update(storeInventory);
                     await _context.SaveChangesAsync();
                 }
