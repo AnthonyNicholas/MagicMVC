@@ -7,9 +7,12 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
+using MagicMVC.Data;
 
 namespace MagicMVC.Controllers
 {
+    [Authorize(Roles = Constants.OwnerRole)]
     public class OwnerInventoryController : Controller
     {
         private readonly MagicMVCContext _context;
@@ -22,8 +25,7 @@ namespace MagicMVC.Controllers
 
         }
 
-        // Auto-parsed variables coming in from the request - there is a form on the page to send this data.
-
+        // Auto-parsed variables coming in from the request - there is a form on the page to send this data.        
         public async Task<IActionResult> Index(string productName)
         {
             var inventory = await this.owner.GetOwnerInventory();

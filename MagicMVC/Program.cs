@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
+using MagicMVC.Data;
 
 namespace MagicMVC
 {
@@ -25,7 +26,9 @@ namespace MagicMVC
                             try
                             {
                                 SeedData.Initialize(services);
-                            }
+                                SeedData2.Initialize(services).Wait();
+
+                }
                             catch(Exception ex)
                             {
                                 var logger = services.GetRequiredService<ILogger<Program>>();
