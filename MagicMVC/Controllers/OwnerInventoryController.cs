@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using MagicMVC.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace MagicMVC.Controllers
 {
@@ -46,6 +48,45 @@ namespace MagicMVC.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
 
         }
+
+        // GET: Store/Edit/5
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var ownerInventory = await _context.OwnerInventory.Include(s => s.Product).SingleOrDefaultAsync(m => m.ProductID == id);
+            if (ownerInventory == null)
+            {
+                return NotFound();
+            }
+            ViewData["ProductID"] = new SelectList(_context.Products, "ProductID", "ProductID", ownerInventory.ProductID);
+            ViewData["Name"] = ownerInventory.Product.Name;
+            return View(ownerInventory);
+        }
+
+        // POST: Store/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("ProductID,StockLevel")] OwnerInventory ownerInventory)
+        {
+            _context.Update(ownerInventory);
+            await _context.SaveChangesAsync();
+            ViewData["ProductID"] = new SelectList(_context.Products, "ProductID", "ProductID", ownerInventory.ProductID);
+            return RedirectToAction(nameof(Index));
+            return View(ownerInventory);
+        }
+
+        private bool OwnerInventoryExists(int id)
+        {
+            return _context.OwnerInventory.Any(e => e.ProductID == id);
+        }
+
+
 
     }
 

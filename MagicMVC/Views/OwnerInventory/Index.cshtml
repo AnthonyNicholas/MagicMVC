@@ -6,6 +6,8 @@
 
 <h2>Owner Inventory</h2>
 
+
+
 <form method="get">
     <p>
         Product Name: <input name="productName" value="@ViewBag.ProductName" />
@@ -32,7 +34,8 @@
         </tr>
     </thead>
     <tbody>
-        @foreach(var item in Model) {
+        @foreach (var item in Model)
+        {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.ProductID)
@@ -46,7 +49,10 @@
             <td>
                 @Html.DisplayFor(modelItem => item.StockLevel)
             </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id=item.ProductID })
+            </td>
         </tr>
-        }
-    </tbody>
-</table>
+    }
+        </tbody>
+    </table>
