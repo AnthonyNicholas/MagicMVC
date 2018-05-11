@@ -23,6 +23,7 @@ namespace MagicMVC.Data
             }
             var userManager = serviceProvider.GetService<UserManager<ApplicationUser>>();
             await EnsureUserHasRole(userManager, "s3607162@student.rmit.edu.au", Constants.OwnerRole);
+            await EnsureUserHasRole(userManager, "s3379758@student.rmit.edu.au", Constants.OwnerRole);
             await EnsureUserHasRole(userManager, "wholesale@example.com", Constants.WholeSaleRole);
             await EnsureUserHasRole(userManager, "matthew.bolger@rmit.edu.au", Constants.WholeSaleRole);
         }
