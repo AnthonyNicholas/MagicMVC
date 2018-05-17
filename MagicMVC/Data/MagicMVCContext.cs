@@ -9,6 +9,8 @@ namespace MagicMVC.Models
         public DbSet<Store> Stores { get; set; }
         public DbSet<OwnerInventory> OwnerInventory { get; set; }
         public DbSet<StockRequest> StockRequests { get; set; }
+        public DbSet<Purchase> Purchases { get; set; }
+
 
         public MagicMVCContext(DbContextOptions<MagicMVCContext> options) : base(options)
         { }

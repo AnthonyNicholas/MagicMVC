@@ -1,0 +1,54 @@
+﻿@model MagicMVC.Models.Purchase
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Purchase</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.StoreID)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.StoreID)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ProductID)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ProductID)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.QuantityToPurchase)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.QuantityToPurchase)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CustomerID)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CustomerID)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Confirmed)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Confirmed)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DateOfPurchase)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DateOfPurchase)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.PurchaseID">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
