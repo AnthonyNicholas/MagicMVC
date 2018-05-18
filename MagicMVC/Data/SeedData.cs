@@ -64,6 +64,14 @@ namespace MagicMVC.Models
 
                 context.Products.AddRange(products);
 
+                var franchisees = new[]
+                {
+                    new Franchisee(context, "02287d27-6b24-443f-a883-cd5eb9436c54", 1), // franchisee@example.com
+                    new Franchisee(context, "c25bfc0a-5eb9-4427-a8fc-3be7cf4e0658", 2), // antfellow@gmail.com
+                };
+
+                context.Franchisees.AddRange(franchisees);
+
                 var i = 0;
                 context.OwnerInventory.AddRange(
                     new OwnerInventory

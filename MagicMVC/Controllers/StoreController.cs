@@ -6,14 +6,19 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MagicMVC.Models;
+using MagicMVC.Data;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 
 namespace MagicMVC.Controllers
 {
 
     // StoreController: Franchisee needs to see stock & be able to make stock requests
-
+    [Authorize(Roles=Constants.FranchiseeRole)]
     public class StoreController : Controller
     {
+        public const string SessionFranchiseStoreID = "_FranchiseStoreID";
         private readonly MagicMVCContext _context;
         private Franchisee franchisee;
 
@@ -23,12 +28,19 @@ namespace MagicMVC.Controllers
             
         }
 
-        // GET: Store Index - shows inventory for given store.  Default is CBD store (StoreID = 1).  Other stores'
-        //inventories can be accessed by passing in their IDs as parameters in url eg Store/index/2
+        // GET: Store Index - shows inventory for the user's store.
 
-        public async Task<IActionResult> Index(string productName, int id = 1)
+        public async Task<IActionResult> Index(string productName)
         {
-            franchisee = new Franchisee(_context, id);
+            int id;
+            var sessionID = HttpContext.Session.GetInt32(SessionFranchiseStoreID);
+            var claimsIdentity = User.Identity as ClaimsIdentity;
+            var userID = claimsIdentity.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+            franchisee = _context.Franchisees.FirstOrDefault(f => f.UserID == userID);
+            id = franchisee.StoreID;
+
+            
             Store testStore = await franchisee.GetStore();
             List<StoreInventory> inventory = await franchisee.GetStoreInventory();
             
@@ -41,7 +53,7 @@ namespace MagicMVC.Controllers
             if (!string.IsNullOrWhiteSpace(productName))
             {
                 inventory = await franchisee.GetStoreInventory(productName);
-
+                
                 // Storing the search into ViewBag to populate the textbox with the same value for convenience.
                 ViewBag.ProductName = productName;
             }

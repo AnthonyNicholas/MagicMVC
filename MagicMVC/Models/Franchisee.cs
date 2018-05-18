@@ -16,24 +16,27 @@ namespace MagicMVC.Models
     public class Franchisee
     {
         private readonly MagicMVCContext _context;
-        public int storeID { get; set; }
+        [Key]
+        public string UserID { get; set; }
+        public int StoreID { get; set; }
 
-        public Franchisee(MagicMVCContext context, int storeID = 1)
+        public Franchisee(MagicMVCContext context, string userID = "", int storeID = 1)
         {
             _context = context;
-            this.storeID = storeID;
+            this.UserID = userID;
+            this.StoreID = storeID;
         }
 
         public async Task<Store> GetStore()
         {
-            var query = _context.Stores.Where(x => x.StoreID == this.storeID);
+            var query = _context.Stores.Where(x => x.StoreID == this.StoreID);
             Store store = (await query.ToListAsync()).First();
             return store;
         }
 
         public async Task<List<StoreInventory>> GetStoreInventory()
         {
-            var query = _context.StoreInventory.Include(x => x.Product).Where(x => x.StoreID == this.storeID);
+            var query = _context.StoreInventory.Include(x => x.Product).Where(x => x.StoreID == this.StoreID);
             query = query.OrderBy(x => x.Product.Name);
             return (await query.ToListAsync());
         }
@@ -42,7 +45,7 @@ namespace MagicMVC.Models
         {
             var query = _context.StoreInventory
                             .Include(x => x.Product)
-                            .Where(x => x.StoreID == this.storeID)
+                            .Where(x => x.StoreID == this.StoreID)
                             .Where(x => x.ProductID == productID);
 
             return await query.ToListAsync();
@@ -52,7 +55,7 @@ namespace MagicMVC.Models
         {
             var query = _context.StoreInventory
                             .Include(x => x.Product)
-                            .Where(x => x.StoreID == this.storeID)
+                            .Where(x => x.StoreID == this.StoreID)
                             .Where(x => x.Product.Name.Contains(productName));
 
             return await query.ToListAsync();
@@ -61,14 +64,14 @@ namespace MagicMVC.Models
         public async Task<bool> StoreInventoryExists(int productID)
         {
             return _context.StoreInventory
-                            .Where(x => x.StoreID == this.storeID)
+                            .Where(x => x.StoreID == this.StoreID)
                             .Any(e => e.ProductID == productID);
         }
 
         public async Task AddItemToStoreInventory(StockRequest s)
         {
             //Add item to storeInventory
-            StoreInventory item = new StoreInventory { StoreID = this.storeID, ProductID = s.ProductID, StockLevel = s.Quantity };
+            StoreInventory item = new StoreInventory { StoreID = this.StoreID, ProductID = s.ProductID, StockLevel = s.Quantity };
             this._context.StoreInventory.Add(item);
             this._context.SaveChanges();
             return;
