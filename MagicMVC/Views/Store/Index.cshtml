@@ -15,7 +15,7 @@
 </form>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="MakeStockRequest">Request New Item</a>
 </p>
 <table class="table">
     <thead>
@@ -58,9 +58,10 @@
                 @Html.DisplayFor(modelItem => item.StockLevel)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                @Html.ActionLink("Edit", "Edit", new { id=item.ProductID }) |
+                @Html.ActionLink("Details", "Details", new { id=item.ProductID }) |
+                @Html.ActionLink("Delete", "Delete", new { id=item.ProductID }) |
+                @Html.ActionLink("Request", "MakeStockRequest", new { id = item.ProductID })
             </td>
         </tr>
         }

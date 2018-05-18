@@ -20,7 +20,8 @@ namespace MagicMVC.Controllers
     {
         public const string SessionFranchiseStoreID = "_FranchiseStoreID";
         private readonly MagicMVCContext _context;
-        private Store store;
+        private Store Store;
+        private string UserID;
 
         public StoreController(MagicMVCContext context)
         {
@@ -28,19 +29,23 @@ namespace MagicMVC.Controllers
             
         }
 
+        private void FetchStore()
+        {
+            var sessionID = HttpContext.Session.GetInt32(SessionFranchiseStoreID);
+            var claimsIdentity = User.Identity as ClaimsIdentity;
+            UserID = claimsIdentity.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+            Store = _context.Stores.FirstOrDefault(s => s.FranchiseeUser == UserID);
+        }
+
         // GET: Store Index - shows inventory for the user's store.
 
         public async Task<IActionResult> Index(string productName)
         {
-            int storeID;
-            var sessionID = HttpContext.Session.GetInt32(SessionFranchiseStoreID);
-            var claimsIdentity = User.Identity as ClaimsIdentity;
-            var userID = claimsIdentity.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            FetchStore();
+            int storeID = Store.StoreID;
 
-            store = _context.Stores.FirstOrDefault(s => s.FranchiseeUser == userID);
-            storeID = store.StoreID;
-
-            Franchisee franchisee = new Franchisee(_context, userID, storeID);
+            Franchisee franchisee = new Franchisee(_context, UserID, storeID);
             
             List<StoreInventory> inventory = await franchisee.GetStoreInventory();
             
@@ -82,6 +87,31 @@ namespace MagicMVC.Controllers
             }
 
             return View(storeInventory);
+        }
+
+        // GET: Store/MakeStockRequest
+        public IActionResult MakeStockRequest(int? id)
+        {
+            ViewData["ProductID"] = new SelectList(_context.Products, "ProductID", "ProductID", id ?? _context.Products.First().ProductID);
+            return View();
+        }
+
+        // POST: Store/MakeStockRequest
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> MakeStockRequest([Bind("StoreID,ProductID,Quantity")] StockRequest stockRequest)
+        {
+            if (ModelState.IsValid)
+            {
+                FetchStore();
+                stockRequest.StoreID = Store.StoreID;
+                _context.Add(stockRequest);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(stockRequest);
         }
 
         // GET: Store/Create
