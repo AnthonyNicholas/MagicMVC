@@ -7,7 +7,11 @@ namespace MagicMVC.Models
     public class StoreInventory
     {
         public int StoreID { get; set; }
+
+        [Display(Name="Product ID")]
         public int ProductID { get; set; }
+
+        [Display(Name="Stock Level")]
         public int StockLevel { get; set; }
 
         public Product Product { get; set; }

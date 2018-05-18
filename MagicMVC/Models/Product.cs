@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace MagicMVC.Models
@@ -6,7 +7,9 @@ namespace MagicMVC.Models
     public class Product
     {
         //private readonly MagicMVCContext _context;
+        [Display(Name="Product ID")]
         public int ProductID { get; set; }
+        [Display(Name="Product Name")]
         public string Name { get; set; }
         public decimal Price { get; set; }
 

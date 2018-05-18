@@ -16,11 +16,12 @@
                     @if (User.IsInRole(Constants.OwnerRole))
                     {
                         <li><a asp-area="" asp-controller="OwnerInventory" asp-action="Index">Owner Inventory</a></li>
+                        <li><a asp-area="" asp-controller="StockRequests" asp-action="Index">View Stock Requests</a></li>
                     }
 
                     @if (User.IsInRole(Constants.FranchiseeRole))
                     {
-                        <li><a asp-area="" asp-controller="StockRequests" asp-action="Index">View Stock Requests</a></li>
+
                         <li><a asp-area="" asp-controller="Store" asp-action="Index">Store Inventory</a></li>
                     }
 
