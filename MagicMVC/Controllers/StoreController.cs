@@ -20,7 +20,7 @@ namespace MagicMVC.Controllers
     {
         public const string SessionFranchiseStoreID = "_FranchiseStoreID";
         private readonly MagicMVCContext _context;
-        private Franchisee franchisee;
+        private Store store;
 
         public StoreController(MagicMVCContext context)
         {
@@ -32,23 +32,23 @@ namespace MagicMVC.Controllers
 
         public async Task<IActionResult> Index(string productName)
         {
-            int id;
+            int storeID;
             var sessionID = HttpContext.Session.GetInt32(SessionFranchiseStoreID);
             var claimsIdentity = User.Identity as ClaimsIdentity;
             var userID = claimsIdentity.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
 
-            franchisee = _context.Franchisees.FirstOrDefault(f => f.UserID == userID);
-            id = franchisee.StoreID;
+            store = _context.Stores.FirstOrDefault(s => s.FranchiseeUser == userID);
+            storeID = store.StoreID;
 
+            Franchisee franchisee = new Franchisee(_context, userID, storeID);
             
-            Store testStore = await franchisee.GetStore();
             List<StoreInventory> inventory = await franchisee.GetStoreInventory();
             
             // Eager loading the Product table - join between StoreInventory and the Product table.
             //var storeQuery = await _context.Stores.Where(s => s.StoreID == id).ToListAsync();
             //var store = storeQuery.First();
 
-            var productQuery = _context.StoreInventory.Include(x => x.Product).Where(p => p.StoreID == id);
+            var productQuery = _context.StoreInventory.Include(x => x.Product).Where(p => p.StoreID == storeID);
 
             if (!string.IsNullOrWhiteSpace(productName))
             {
