@@ -6,7 +6,6 @@ namespace MagicMVC.Models
 {
     public class StockRequest
     {
-        private readonly MagicMVCContext _context;
 
         public int StockRequestID { get; set; }
         public int StoreID { get; set; }

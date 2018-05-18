@@ -72,7 +72,7 @@ namespace MagicMVC.Controllers
                 try
                 {
  
-                    franchisee.storeID = id;
+                    franchisee.StoreID = id;
                     await franchisee.ProcessSale(p);
                 }
                 catch (DbUpdateConcurrencyException)

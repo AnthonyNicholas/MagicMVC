@@ -80,7 +80,6 @@ namespace MagicMVC.Controllers
             await _context.SaveChangesAsync();
             ViewData["ProductID"] = new SelectList(_context.Products, "ProductID", "ProductID", ownerInventory.ProductID);
             return RedirectToAction(nameof(Index));
-            return View(ownerInventory);
         }
 
         private bool OwnerInventoryExists(int id)
