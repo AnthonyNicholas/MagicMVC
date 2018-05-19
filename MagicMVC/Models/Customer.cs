@@ -18,15 +18,15 @@ namespace MagicMVC.Models
     public class Customer
     {
         private readonly MagicMVCContext _context;
-        public String Name { get; set;  }
+        public String Name { get; set; }
         public String Email { get; set; }
+        public String ID { get; set; }
+
 
         public Customer(MagicMVCContext context)
         {
             _context = context;
         }
-
-
 
         public async Task GetOrderHistory()
         {
@@ -35,33 +35,45 @@ namespace MagicMVC.Models
             return;
         }
 
-        public async Task ProcessSale(Purchase p)
+        public async Task SaveToCart(Purchase p)
         {
-            var query = _context.StoreInventory
-                                    .Include(x => x.Product)
-                                    .Where(x => x.StoreID == p.StoreID)
-                                    .Where(x => x.ProductID == p.ProductID);
+            p.DateOfPurchase = DateTime.Now;
+            _context.Update(p);
+            await _context.SaveChangesAsync();
 
-            StoreInventory item = (await query.ToListAsync()).First();
-                   
-            if (item.StockLevel < p.QuantityToPurchase)
-            {
-                throw new Exception("Insufficient Stock to make that purchase");
-            }
-            else
-            {
-                item.StockLevel -= p.QuantityToPurchase;
-                p.Confirmed = true;
-                p.DateOfPurchase = DateTime.Now;
-                _context.Update(item);
-                _context.Update(p);
-                await _context.SaveChangesAsync();
-                //Confirm purchase on screen
-            }
         }
 
+        public async Task ProcessCart()
+        {
+            var query = _context.Purchases
+                                    .Where(x => x.CustomerID == this.ID)
+                                    .Where(x => x.Confirmed == false)
+                                    .Include(x => x.Store)
+                                        .ThenInclude(store => store.StoreInventoryList)
+                                    .Include(x => x.Product);
 
+            List<Purchase> purchaseList = await query.ToListAsync();
 
+            foreach (Purchase purchase in purchaseList)
+            {
+                var store = purchase.Store;
+                var storeInventory = purchase.Store.GetStoreInventory(purchase.ProductID);
 
+                if (storeInventory.StockLevel < purchase.QuantityToPurchase)
+                {
+                    throw new Exception("Sorry.  We don't have enough of the following product to fill your order: " + purchase.Product.Name);
+                }
+                else
+                {
+                    storeInventory.StockLevel -= purchase.QuantityToPurchase;
+                    purchase.Confirmed = true;
+                    purchase.DateOfPurchase = DateTime.Now;
+                    _context.Update(purchase);
+                    _context.Update(storeInventory);
+                    await _context.SaveChangesAsync();
+                    //Confirm purchase on screen
+                }
+            }
+        }
     }
 }

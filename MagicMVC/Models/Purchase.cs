@@ -15,6 +15,23 @@ namespace MagicMVC.Models
         public Boolean Confirmed { get; set; }
         public DateTime DateOfPurchase { get; set; }
 
+        public Store Store { get; set; }
+        public Product Product { get; set; }
+
+        public decimal SubTotal {
+            get
+            {
+                if (Product != null)
+                {
+                    return Product.Price * QuantityToPurchase;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+        }
+
     }
 }
 

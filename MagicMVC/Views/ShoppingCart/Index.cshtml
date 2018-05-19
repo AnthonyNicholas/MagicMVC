@@ -12,22 +12,19 @@
             <thead>
                 <tr>
                     <th>
-                        @Html.DisplayNameFor(model => model.StoreID)
+                        @Html.DisplayNameFor(model => model.Store.Name)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.ProductID)
+                        @Html.DisplayNameFor(model => model.Product.Name)
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.QuantityToPurchase)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.CustomerID)
+                        Price per Unit
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.Confirmed)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.DateOfPurchase)
+                        Price
                     </th>
                     <th></th>
                 </tr>
@@ -35,30 +32,26 @@
             <tbody>
                 @foreach (var item in Model)
                 {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.StoreID)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ProductID)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.QuantityToPurchase)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.CustomerID)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Confirmed)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.DateOfPurchase)
-                        </td>
-                        <td>
-                            <a asp-action="Edit" asp-route-id="@item.PurchaseID">Edit</a> |
-                            <a asp-action="Delete" asp-route-id="@item.PurchaseID">Delete</a>
-                        </td>
-                    </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Store.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Product.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.QuantityToPurchase)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Product.Price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SubTotal)
+                    </td>
+                    <td>
+                        <a asp-action="Delete" asp-route-id="@item.PurchaseID">Delete</a>
+                    </td>
+                </tr>
                 }
             </tbody>
         </table>

@@ -95,28 +95,6 @@ namespace MagicMVC.Models
             return;
         }
 
-        public async Task ProcessSale(Purchase p)
-        {
-            StoreInventory item = (await GetStoreInventory(p.ProductID)).First();
-
-            if (item.StockLevel < p.QuantityToPurchase)
-            {
-                throw new Exception("Insufficient Stock to make that purchase");
-                //Send to error
-                //Console.WriteLine($"{product.Name} has no stock available.");
-            }
-            else
-            {
-                item.StockLevel -= p.QuantityToPurchase;
-                p.Confirmed = false;
-                p.DateOfPurchase = DateTime.Now;
-                _context.Update(item);
-                _context.Update(p);
-                await _context.SaveChangesAsync();
-                //Confirm purchase on screen
-            }
-        }
-
         public async void MakeStockRequest(StockRequest s)
         {
 

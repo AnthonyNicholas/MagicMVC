@@ -56,7 +56,7 @@
                 @Html.DisplayFor(modelItem => item.StockLevel)
             </td>
             <td>
-                @Html.ActionLink("Purchase", "Purchase", new { ProductID = item.ProductID, id=item.StoreID })
+                @Html.ActionLink("Add to Shopping Cart", "AddToCart", new { ProductID = item.ProductID, id = item.StoreID })
             </td>
         </tr>
         }
