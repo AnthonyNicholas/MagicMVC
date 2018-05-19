@@ -2,16 +2,16 @@
 
 
 @{
-    ViewData["Title"] = "Purchase";
+    ViewData["Title"] = "Add To Cart";
 }
 
-<h2>Customer Purchase</h2>
+<h2>Add to Shopping Cart</h2>
 
-<h4>Checkout</h4>
+<h4>Select Quantity to add</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Purchase">
+        <form asp-action="AddToCart">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="StoreID" />
             <input type="hidden" asp-for="ProductID" />
@@ -21,14 +21,14 @@
                 <span asp-validation-for="QuantityToPurchase" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Purchase" class="btn btn-default" />
+                <input type="submit" value="Add to Shopping Cart" class="btn btn-default" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Cancel Purchase</a>
+    <a asp-action="Index">Cancel</a>
 </div>
 
 @section Scripts {

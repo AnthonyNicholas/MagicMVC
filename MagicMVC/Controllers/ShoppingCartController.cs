@@ -4,11 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MagicMVC.Models;
 using MagicMVC.Data;
 using Microsoft.AspNetCore.Authorization;
 using MagicMVC.Utilities;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace MagicMVC.Controllers
 {
@@ -16,68 +18,32 @@ namespace MagicMVC.Controllers
     public class ShoppingCartController : Controller
     {
         private readonly MagicMVCContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
+        Customer customer;
 
-        public ShoppingCartController(MagicMVCContext context)
+        public ShoppingCartController(MagicMVCContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
+            customer = new Customer(_context);
+        }
+
+        public override void OnActionExecuting(ActionExecutingContext context)
+        {
+            //Set the customer.ID after class constructed   
+            customer.ID = _userManager.GetUserId(User);
         }
 
         // GET: ShoppingCart
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Purchases.ToListAsync());
-        }
+            var query = _context.Purchases
+                            .Where(x => x.CustomerID == customer.ID)
+                            .Where(x => x.Confirmed == false)
+                            .Include(x => x.Store)
+                            .Include(x => x.Product);
 
-
-        // GET: ShoppingCart/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var purchase = await _context.Purchases.SingleOrDefaultAsync(m => m.PurchaseID == id);
-            if (purchase == null)
-            {
-                return NotFound();
-            }
-            return View(purchase);
-        }
-
-        // POST: ShoppingCart/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("PurchaseID,StoreID,ProductID,QuantityToPurchase,CustomerID,Confirmed,DateOfPurchase")] Purchase purchase)
-        {
-            if (id != purchase.PurchaseID)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(purchase);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!PurchaseExists(purchase.PurchaseID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(purchase);
+            return View(await query.ToListAsync());
         }
 
         // GET: ShoppingCart/Delete/5
@@ -123,7 +89,7 @@ namespace MagicMVC.Controllers
         // POST: PaymentPage
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Pay(CreditCardForm creditCardForm)
+        public async Task<IActionResult> Pay(CreditCardForm creditCardForm)
         {
             // Validate card type.
             CardType expectedCardType = CardTypeInfo.GetCardType(creditCardForm.CreditCardNumber);
@@ -137,6 +103,7 @@ namespace MagicMVC.Controllers
                 return View(creditCardForm);
             }
 
+            await customer.ProcessCart();
             return View("PaymentReceived");
         }
 

@@ -68,7 +68,7 @@ namespace MagicMVC.Controllers
         }
 
         // GET: Customer/Purchase/5
-        public async Task<IActionResult> Purchase(int ProductID, int id = 1)
+        public async Task<IActionResult> AddToCart(int ProductID, int id = 1)
         {
             userID = _userManager.GetUserId(User);
             var storeInventory = await _context.StoreInventory
@@ -92,7 +92,7 @@ namespace MagicMVC.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Purchase(int id, [Bind("StoreID,ProductID,QuantityToPurchase,Confirmed,DateOfPurchase,CustomerID")] Purchase p)
+        public async Task<IActionResult> AddToCart(int id, [Bind("StoreID,ProductID,QuantityToPurchase,Confirmed,DateOfPurchase,CustomerID")] Purchase p)
         {
             p.CustomerID = _userManager.GetUserId(User);
 
@@ -104,15 +104,14 @@ namespace MagicMVC.Controllers
             if (ModelState.IsValid)
             {
                 try
-                {
- 
+                { 
                     franchisee.StoreID = id;
                     var numInStock = await franchisee.getStockLevel(p.ProductID);
                     if (numInStock < p.QuantityToPurchase)
                     {
-
+                        throw new Exception("Sorry, we don't have enough stock.  Please give us a call.");
                     }
-                    await franchisee.ProcessSale(p);
+                    await customer.SaveToCart(p);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
