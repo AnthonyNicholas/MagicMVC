@@ -6,9 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MagicMVC.Models;
+using MagicMVC.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MagicMVC.Controllers
 {
+    [Authorize(Roles=Constants.CustomerRole)]
     public class ShoppingCartController : Controller
     {
         private readonly MagicMVCContext _context;

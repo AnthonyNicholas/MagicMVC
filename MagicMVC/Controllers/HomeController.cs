@@ -5,9 +5,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MagicMVC.Models;
+using MagicMVC.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MagicMVC.Controllers
 {
+    [Authorize(Roles = Constants.AllRoles)]
     public class HomeController : Controller
     {
         public IActionResult Index()

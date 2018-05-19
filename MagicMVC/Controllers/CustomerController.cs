@@ -12,7 +12,7 @@ using MagicMVC.Data;
 
 namespace MagicMVC.Controllers
 {
-    
+    [Authorize(Roles = Constants.CustomerRole)]
     public class CustomerController : Controller
     {
         private readonly MagicMVCContext _context;
