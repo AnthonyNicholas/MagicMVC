@@ -104,9 +104,16 @@ namespace MagicMVC.Controllers
             }
 
             var purchaseList = await customer.ProcessCart();
-            ViewData["totalPrice"] = purchaseList.Sum(p => p.SubTotal);
 
-            return View("Confirmation");
+            Order order = new Order();
+            order.CustomerID = customer.ID;
+            order.Date = DateTime.Now;
+            order.TotalPrice = purchaseList.Sum(p => p.SubTotal);
+            ViewData["order"] = order;
+            _context.Update(order);
+            await _context.SaveChangesAsync();
+
+            return View("Confirmation", purchaseList);
 
         }
 
