@@ -1,0 +1,41 @@
+﻿@model IEnumerable<MagicMVC.Models.Purchase>
+
+@{
+    ViewBag.Title = "Order Movies";
+}
+
+<script src="/js/angular.min.js"></script>
+
+<div ng-app="magicMVC" ng-controller="purchasesCtrl">
+    <h2>Movies</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Release Date</th>
+                <th>Genre</th>
+                <th>Price</th>
+                <th>Rating</th>
+            </tr>
+        <thead>
+        <tbody>
+            <tr ng-repeat="x in model">
+                <td>{{ x.PurchaseID }}</td>
+                <td>{{ x.ProductID }}</td>
+                <td>{{ x.releaseDate | date:"dd/MM/yyyy" }}</td>
+                <td>{{ x.genre }}</td>
+                <td>{{ x.price | currency }}</td>
+                <td>{{ x.rating }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    var app = angular.module("magicMVC", []);
+    app.controller("purchasesCtrl", ["$scope", "companionship", function ($scope, companionship) {
+        $scope.companions = companionship;
+    }]);
+</script>
+

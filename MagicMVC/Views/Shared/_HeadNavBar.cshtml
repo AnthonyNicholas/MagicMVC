@@ -29,11 +29,12 @@
                     {
                         <li><a asp-area="" asp-controller="Customer" asp-action="Index">Browse Products</a></li>
                         <li><a asp-area="" asp-controller="ShoppingCart" asp-action="Index">Your Cart</a></li>
+                        <li><a asp-area="" asp-controller="Customer" asp-action="History">Your Order History</a></li>
                     }
 
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
-               </ul>
+                </ul>
                 @await Html.PartialAsync("_LoginPartial")
             </div>
         </div>

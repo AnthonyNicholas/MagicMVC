@@ -59,6 +59,14 @@ namespace MagicMVC.Controllers
             return View(await productQuery.ToListAsync());
         }
 
+        // GET: Customer/History
+        public async Task<IActionResult> History()
+        {
+            var productQuery = _context.Purchases.Include(s => s.Product).Include(s => s.Store).Where(p => p.UserID == _userManager.GetUserId(User));
+
+            return View(await productQuery.ToListAsync());
+        }
+
         // GET: Customer/Purchase/5
         public async Task<IActionResult> Purchase(int ProductID, int id = 1)
         {
