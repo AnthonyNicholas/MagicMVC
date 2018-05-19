@@ -40,6 +40,21 @@ namespace MagicMVC.Controllers
 
         // GET: Store Index - shows inventory for the user's store.
 
+        public async Task<IActionResult> Unstocked()
+        {
+            FetchStore();
+            int storeID = Store.StoreID;
+            Franchisee franchisee = new Franchisee(_context, UserID, storeID);
+
+            // Load products in OwnerInventory that aren't in this Store's Inventory
+            var storeInventory = await franchisee.GetStoreInventory();
+            List<OwnerInventory> inventory = await _context.OwnerInventory.Include(i => i.Product).Where(o => !storeInventory.Any(s => s.ProductID == o.ProductID)).ToListAsync();
+
+            //Passing a List<OwnerInventory> model object to the View.
+
+            return View(inventory);
+        }
+
         public async Task<IActionResult> Index(string productName)
         {
             FetchStore();
@@ -108,6 +123,18 @@ namespace MagicMVC.Controllers
                 FetchStore();
                 stockRequest.StoreID = Store.StoreID;
                 _context.Add(stockRequest);
+
+                // if this product wasn't previously in stock, add it to the store stock with quantity 1
+                if (!Store.StoreInventoryList.Any(si => si.ProductID == stockRequest.ProductID)) {
+                    _context.Add(new StoreInventory
+                    {
+                        StoreID = Store.StoreID,
+                        Product = _context.Products.Find(stockRequest.ProductID),
+                        StockLevel = 1
+                    });
+                }
+                
+
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
