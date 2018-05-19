@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using MagicMVC.Data;
+using System.Globalization;
 
 namespace MagicMVC
 {
@@ -19,23 +20,24 @@ namespace MagicMVC
         {
             var host = BuildWebHost(args);
 
-                        using(var scope = host.Services.CreateScope())
-                        {
-                            var services = scope.ServiceProvider;
+            using(var scope = host.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
 
-                            try
-                            {
-                                SeedData.Initialize(services);
-                                SeedData2.Initialize(services).Wait();
+                try
+                {
+                    SeedData.Initialize(services);
+                    SeedData2.Initialize(services).Wait();
 
                 }
-                            catch(Exception ex)
-                            {
-                                var logger = services.GetRequiredService<ILogger<Program>>();
-                                logger.LogError(ex, "An error occurred seeding the DB.");
-                            }
-                        }
+                catch(Exception ex)
+                {
+                    var logger = services.GetRequiredService<ILogger<Program>>();
+                    logger.LogError(ex, "An error occurred seeding the DB.");
+                }
+            }
 
+            CultureInfo.CurrentCulture = new CultureInfo("en-au");
 
             BuildWebHost(args).Run();
         }

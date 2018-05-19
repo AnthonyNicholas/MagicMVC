@@ -11,6 +11,8 @@ namespace MagicMVC.Models
         public int ProductID { get; set; }
         [Display(Name="Product Name")]
         public string Name { get; set; }
+
+        [DataType(DataType.Currency)]
         public decimal Price { get; set; }
 
     }
