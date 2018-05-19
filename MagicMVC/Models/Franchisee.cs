@@ -6,12 +6,13 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
 
+
 namespace MagicMVC.Models
 {
-    // Frnachisee class
+    // Franchisee class
     // Note - this is not one of the classes being managed by Entity Framework.  
-    // Rather reflects object oriented design & logic sitting with model rather than in
-    // controller.
+    // This class contains methods for things the Franchisee needs to do - getting the inventory for their store,
+    // processing sales and making stock requests.
 
     public class Franchisee
     {
@@ -58,11 +59,21 @@ namespace MagicMVC.Models
             return await query.ToListAsync();
         }
 
+        public async Task<List<StoreInventory>> GetStoreInventoryBelowThreshold(int threshold)
+        {
+            var query = _context.StoreInventory
+                            .Include(x => x.Product)
+                            .Where(x => x.StoreID == this.storeID)
+                            .Where(x => x.IsBelowThreshold(threshold));
+
+            return await query.ToListAsync();
+        }
+
         public async Task<bool> StoreInventoryExists(int productID)
         {
-            return _context.StoreInventory
+            return await _context.StoreInventory
                             .Where(x => x.StoreID == this.storeID)
-                            .Any(e => e.ProductID == productID);
+                            .AnyAsync(e => e.ProductID == productID);
         }
 
         public async Task AddItemToStoreInventory(StockRequest s)
@@ -87,17 +98,19 @@ namespace MagicMVC.Models
             else
             {
                 item.StockLevel -= p.QuantityToPurchase;
+                p.Confirmed = true;
+                p.DateOfPurchase = DateTime.Now;
                 _context.Update(item);
+                _context.Update(p);
                 await _context.SaveChangesAsync();
                 //Confirm purchase on screen
             }
         }
 
+        public async void MakeStockRequest(StockRequest s)
+        {
 
-
-        //public async void MakeStockRequest(StockRequest s)
-        //{
-        //    return;
-        //}
+            return;
+        }
     }
 }

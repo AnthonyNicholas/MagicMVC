@@ -4,29 +4,42 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MagicMVC.Models;
+using MagicMVC.Data;
 
 namespace MagicMVC.Controllers
 {
+    
     public class CustomerController : Controller
     {
         private readonly MagicMVCContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
         Customer customer;
         Franchisee franchisee;
+        String userID;
 
-        public CustomerController(MagicMVCContext context)
+
+        public CustomerController(MagicMVCContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
             customer = new Customer(_context);
             franchisee = new Franchisee(_context);
         }
 
+        //protected override void Initialize(System.Web.Routing.RequestContext rContext, )
+        //{
+
+        //}
+
+
         // GET: Customer
         public async Task<IActionResult> Index(int id = 1)
         {
-            //var productQuery = _context.StoreInventory.Include(x => x.Product).Where(p => p.StoreID == id);
-
+            //user = await _userManager.GetUserAsync(User);
             var productQuery = _context.StoreInventory.Include(s => s.Product).Include(s => s.Store).Where(p => p.StoreID == id);
             return View(await productQuery.ToListAsync());
         }
@@ -34,11 +47,7 @@ namespace MagicMVC.Controllers
         // GET: Customer/Purchase/5
         public async Task<IActionResult> Purchase(int ProductID, int id = 1)
         {
-            //if (id == null)
-            //{
-            //    return NotFound();
-            //}
-
+            userID = _userManager.GetUserId(User);
             var storeInventory = await _context.StoreInventory
                                     .Where(r => r.ProductID == ProductID)
                                      .SingleOrDefaultAsync(m => m.StoreID == id);
@@ -50,7 +59,7 @@ namespace MagicMVC.Controllers
             ViewData["ProductID"] = new SelectList(_context.Products, "ProductID", "ProductID", storeInventory.ProductID);
             ViewData["StoreID"] = new SelectList(_context.Stores, "StoreID", "StoreID", storeInventory.StoreID);
 
-            Purchase p = new Purchase { StoreID = id, ProductID = ProductID, QuantityToPurchase = 0 }; 
+            Purchase p = new Purchase { StoreID = id, ProductID = ProductID, QuantityToPurchase = 0, Confirmed = false, DateOfPurchase = DateTime.MinValue, CustomerID = userID}; 
 
             return View(p);
         }
@@ -60,8 +69,10 @@ namespace MagicMVC.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Purchase(int id, [Bind("StoreID,ProductID,QuantityToPurchase")] Purchase p)
+        public async Task<IActionResult> Purchase(int id, [Bind("StoreID,ProductID,QuantityToPurchase,Confirmed,DateOfPurchase,CustomerID")] Purchase p)
         {
+            p.CustomerID = _userManager.GetUserId(User);
+
             if (id != p.StoreID)
             {
                 return NotFound();

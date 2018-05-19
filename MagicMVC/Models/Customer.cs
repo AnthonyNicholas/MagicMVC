@@ -18,6 +18,8 @@ namespace MagicMVC.Models
     public class Customer
     {
         private readonly MagicMVCContext _context;
+        public String Name { get; set;  }
+        public String Email { get; set; }
 
         public Customer(MagicMVCContext context)
         {

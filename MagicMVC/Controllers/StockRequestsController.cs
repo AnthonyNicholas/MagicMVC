@@ -4,12 +4,19 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using MagicMVC.Models;
+using MagicMVC.Data;
 
+/*
+ *StockRequestsController is used by the owner and the franchisees.  The franchisees can view stock requests for 
+ * their store and can make new ones. The owner is able to view all the stock requests and to process them.
+ */
 
 namespace MagicMVC.Controllers
 {
+    [Authorize(Roles = Constants.OwnerRole)]
     public class StockRequestsController : Controller
     {
         private readonly MagicMVCContext _context;
@@ -107,6 +114,7 @@ namespace MagicMVC.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = Constants.OwnerRole)]
         private bool StockRequestExists(int id)
         {
             return _context.StockRequests.Any(e => e.StockRequestID == id);

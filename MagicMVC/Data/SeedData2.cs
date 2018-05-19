@@ -13,7 +13,7 @@ namespace MagicMVC.Data
         public static async Task Initialize(IServiceProvider serviceProvider)
         {
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            var roles = new[] { Constants.OwnerRole, Constants.WholeSaleRole };
+            var roles = new[] { Constants.OwnerRole, Constants.FranchiseeRole, Constants.CustomerRole };
             foreach (var role in roles)
             {
                 if (!await roleManager.RoleExistsAsync(role))
@@ -24,8 +24,8 @@ namespace MagicMVC.Data
             var userManager = serviceProvider.GetService<UserManager<ApplicationUser>>();
             await EnsureUserHasRole(userManager, "s3607162@student.rmit.edu.au", Constants.OwnerRole);
             await EnsureUserHasRole(userManager, "s3379758@student.rmit.edu.au", Constants.OwnerRole);
-            await EnsureUserHasRole(userManager, "wholesale@example.com", Constants.WholeSaleRole);
-            await EnsureUserHasRole(userManager, "matthew.bolger@rmit.edu.au", Constants.WholeSaleRole);
+            await EnsureUserHasRole(userManager, "franchisee@example.com", Constants.FranchiseeRole);
+            await EnsureUserHasRole(userManager, "customer@example.com", Constants.CustomerRole);
         }
         private static async Task EnsureUserHasRole(
         UserManager<ApplicationUser> userManager, string userName, string role)

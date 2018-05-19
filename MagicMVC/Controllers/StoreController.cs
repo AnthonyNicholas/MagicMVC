@@ -26,7 +26,7 @@ namespace MagicMVC.Controllers
         // GET: Store Index - shows inventory for given store.  Default is CBD store (StoreID = 1).  Other stores'
         //inventories can be accessed by passing in their IDs as parameters in url eg Store/index/2
 
-        public async Task<IActionResult> Index(string productName, int id = 1)
+        public async Task<IActionResult> Index(string productName, int threshold, int id = 1)
         {
             franchisee = new Franchisee(_context, id);
             Store testStore = await franchisee.GetStore();
@@ -46,6 +46,13 @@ namespace MagicMVC.Controllers
                 ViewBag.ProductName = productName;
             }
 
+            if (threshold != 0)
+            {
+                inventory = await franchisee.GetStoreInventoryBelowThreshold(threshold);
+
+                // Storing the search into ViewBag to populate the textbox with the same value for convenience.
+                ViewBag.Threshold = threshold;
+            }
 
             //Passing a List<OwnerInventory> model object to the View.
 
