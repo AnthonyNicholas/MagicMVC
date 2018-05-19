@@ -109,9 +109,12 @@ namespace MagicMVC.Controllers
             order.CustomerID = customer.ID;
             order.Date = DateTime.Now;
             order.TotalPrice = purchaseList.Sum(p => p.SubTotal);
-            ViewData["order"] = order;
             _context.Update(order);
             await _context.SaveChangesAsync();
+
+            ViewData["orderID"] = order.OrderID;
+            ViewData["TotalPrice"] = order.TotalPrice;
+            ViewData["Date"] = order.Date;
 
             return View("Confirmation", purchaseList);
 

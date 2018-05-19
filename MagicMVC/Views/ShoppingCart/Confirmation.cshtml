@@ -8,6 +8,10 @@
 
 Thank you for your purchase!
 
+<h6>Order Number: @ViewData["orderID"]</h6>
+<h6>Date: @ViewData["Date"]</h6>
+
+
 <div class="form-horizontal">
     <div class="form-group">
         <table class="table">
@@ -37,28 +41,29 @@ Thank you for your purchase!
             <tbody>
                 @foreach (var item in Model)
                 {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.PurchaseID)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Store.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Product.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.QuantityToPurchase)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Product.Price)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.SubTotal)
-                    </td>
-                </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PurchaseID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Store.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Product.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.QuantityToPurchase)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Product.Price)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SubTotal)
+                        </td>
+                    </tr>
                 }
             </tbody>
         </table>
     </div>
+    <h4>Total Price: $@ViewData["TotalPrice"] </h4>
 </div>
