@@ -106,8 +106,10 @@ namespace MagicMVC.Controllers
             //var purchaseList = await customer.ProcessCart();
 
             //var totalPrice = purchaseList.Sum()
+   
+            //return View("Confirmation", purchaseList);
+            return View("Confirmation");
 
-            return View("Confirmation", purchaseList);
         }
 
     }
