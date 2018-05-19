@@ -1,22 +1,19 @@
 ﻿@model IEnumerable<MagicMVC.Models.StoreInventory>
 
 @{
-    ViewData["Title"] = "Customer View";
+    ViewData["Title"] = "Browse Products";
 }
 
-<h2>Customer View</h2>
+<h2>Browse Products</h2>
 
 <form method="get">
     <p>
         Product Name: <input name="productName" value="@ViewData["ProductName"]" />
+        Store: <select name="storeName" asp-items="ViewBag.StoreName"></select>
         <input type="submit" value="Filter" />
     </p>
 </form>
 
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>

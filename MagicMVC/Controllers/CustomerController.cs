@@ -23,11 +23,25 @@ namespace MagicMVC.Controllers
         }
 
         // GET: Customer
-        public async Task<IActionResult> Index(int id = 1)
+        public async Task<IActionResult> Index(string productName, string storeName)
         {
-            //var productQuery = _context.StoreInventory.Include(x => x.Product).Where(p => p.StoreID == id);
+            if (string.IsNullOrWhiteSpace(storeName))
+            {
+                storeName = _context.Stores.First().Name;
+            }
+            var productQuery = _context.StoreInventory.Include(s => s.Product).Include(s => s.Store).Where(p => p.Store.Name == storeName);
 
-            var productQuery = _context.StoreInventory.Include(s => s.Product).Include(s => s.Store).Where(p => p.StoreID == id);
+            if (!string.IsNullOrWhiteSpace(productName))
+            {
+                // Get products matching the name given.
+                productQuery = productQuery.Where(p => p.Product.Name.Contains(productName));
+
+                // Storing the search into ViewBag to populate the textbox with the same value for convenience.
+                ViewBag.ProductName = productName;
+            }
+
+            ViewData["StoreName"] = new SelectList(_context.Stores, "Name", "Name", storeName);
+            
             return View(await productQuery.ToListAsync());
         }
 
