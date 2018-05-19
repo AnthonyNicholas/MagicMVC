@@ -21,7 +21,7 @@
             <tr ng-repeat="x in purchases">
                 <td>{{ x.Date | date:"dd/MM/yyyy" }}</td>
                 <td>{{ x.OrderID }}</td>
-                <td>{{ x.Product.Price | currency }}</td>
+                <td>{{ x.TotalPrice | currency }}</td>
             </tr>
         </tbody>
     </table>
