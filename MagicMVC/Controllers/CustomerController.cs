@@ -84,6 +84,11 @@ namespace MagicMVC.Controllers
                 {
  
                     franchisee.StoreID = id;
+                    var numInStock = await franchisee.getStockLevel(p.ProductID);
+                    if (numInStock < p.QuantityToPurchase)
+                    {
+
+                    }
                     await franchisee.ProcessSale(p);
                 }
                 catch (DbUpdateConcurrencyException)

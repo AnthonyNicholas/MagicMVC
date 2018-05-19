@@ -26,12 +26,7 @@ namespace MagicMVC.Models
             _context = context;
         }
 
-        public async Task AddToShoppingCart()
-        {
-            //var query = _context.OwnerInventory.Include(x => x.Product).Select(x => x);
-            //query = query.OrderBy(x => x.Product.Name);
-            return;
-        }
+
 
         public async Task GetOrderHistory()
         {
@@ -39,6 +34,32 @@ namespace MagicMVC.Models
             //query = query.OrderBy(x => x.Product.Name);
             return;
         }
+
+        public async Task ProcessSale(Purchase p)
+        {
+            var query = _context.StoreInventory
+                                    .Include(x => x.Product)
+                                    .Where(x => x.StoreID == p.StoreID)
+                                    .Where(x => x.ProductID == p.ProductID);
+
+            StoreInventory item = (await query.ToListAsync()).First();
+                   
+            if (item.StockLevel < p.QuantityToPurchase)
+            {
+                throw new Exception("Insufficient Stock to make that purchase");
+            }
+            else
+            {
+                item.StockLevel -= p.QuantityToPurchase;
+                p.Confirmed = true;
+                p.DateOfPurchase = DateTime.Now;
+                _context.Update(item);
+                _context.Update(p);
+                await _context.SaveChangesAsync();
+                //Confirm purchase on screen
+            }
+        }
+
 
 
 

@@ -6,60 +6,68 @@
 
 <h2>Shopping Cart</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.StoreID)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ProductID)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.QuantityToPurchase)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.CustomerID)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Confirmed)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.DateOfPurchase)
-                </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.StoreID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProductID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.QuantityToPurchase)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CustomerID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Confirmed)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateOfPurchase)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.PurchaseID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.PurchaseID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.PurchaseID">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="form-horizontal">
+    <div class="form-group">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.StoreID)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ProductID)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.QuantityToPurchase)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CustomerID)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Confirmed)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DateOfPurchase)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StoreID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ProductID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.QuantityToPurchase)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CustomerID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Confirmed)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DateOfPurchase)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.PurchaseID">Edit</a> |
+                            <a asp-action="Delete" asp-route-id="@item.PurchaseID">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="form-group">
+        <div class="btn btn-default pull-right">
+            <a asp-action="Pay">Proceed to Payment</a>
+        </div>
+    </div>
+</div>
+
+

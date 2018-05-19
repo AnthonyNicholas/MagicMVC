@@ -79,6 +79,13 @@ namespace MagicMVC.Models
                             .AnyAsync(e => e.ProductID == productID);
         }
 
+        public async Task<int> getStockLevel(int productID)
+        {
+            var item = (await this.GetStoreInventory(productID)).First();
+            return item.StockLevel;
+        }
+
+
         public async Task AddItemToStoreInventory(StockRequest s)
         {
             //Add item to storeInventory
@@ -101,7 +108,7 @@ namespace MagicMVC.Models
             else
             {
                 item.StockLevel -= p.QuantityToPurchase;
-                p.Confirmed = true;
+                p.Confirmed = false;
                 p.DateOfPurchase = DateTime.Now;
                 _context.Update(item);
                 _context.Update(p);

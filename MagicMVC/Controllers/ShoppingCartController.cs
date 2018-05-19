@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MagicMVC.Models;
+using MagicMVC.Utilities;
 
 namespace MagicMVC.Controllers
 {
@@ -24,45 +25,6 @@ namespace MagicMVC.Controllers
             return View(await _context.Purchases.ToListAsync());
         }
 
-        // GET: ShoppingCart/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var purchase = await _context.Purchases
-                .SingleOrDefaultAsync(m => m.PurchaseID == id);
-            if (purchase == null)
-            {
-                return NotFound();
-            }
-
-            return View(purchase);
-        }
-
-        // GET: ShoppingCart/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: ShoppingCart/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PurchaseID,StoreID,ProductID,QuantityToPurchase,CustomerID,Confirmed,DateOfPurchase")] Purchase purchase)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(purchase);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(purchase);
-        }
 
         // GET: ShoppingCart/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -148,5 +110,32 @@ namespace MagicMVC.Controllers
         {
             return _context.Purchases.Any(e => e.PurchaseID == id);
         }
+
+        // GET: PaymentPage
+        public ActionResult Pay()
+        {
+            return View(new CreditCardForm { CreditCardType = CardType.MasterCard });
+        }
+
+        // POST: PaymentPage
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Pay(CreditCardForm creditCardForm)
+        {
+            // Validate card type.
+            CardType expectedCardType = CardTypeInfo.GetCardType(creditCardForm.CreditCardNumber);
+            if (expectedCardType == CardType.Unknown || expectedCardType != creditCardForm.CreditCardType)
+            {
+                ModelState.AddModelError("CreditCardType", "The Credit Card Type field does not match against the credit card number.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(creditCardForm);
+            }
+
+            return View("PaymentReceived");
+        }
+
     }
 }
