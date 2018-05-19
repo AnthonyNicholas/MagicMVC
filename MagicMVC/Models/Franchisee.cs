@@ -66,7 +66,7 @@ namespace MagicMVC.Models
         {
             var query = _context.StoreInventory
                             .Include(x => x.Product)
-                            .Where(x => x.StoreID == this.storeID)
+                            .Where(x => x.StoreID == this.StoreID)
                             .Where(x => x.IsBelowThreshold(threshold));
 
             return await query.ToListAsync();
@@ -75,7 +75,7 @@ namespace MagicMVC.Models
         public async Task<bool> StoreInventoryExists(int productID)
         {
             return await _context.StoreInventory
-                            .Where(x => x.StoreID == this.storeID)
+                            .Where(x => x.StoreID == this.StoreID)
                             .AnyAsync(e => e.ProductID == productID);
         }
 
