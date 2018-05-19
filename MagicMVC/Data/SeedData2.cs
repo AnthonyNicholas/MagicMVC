@@ -26,6 +26,7 @@ namespace MagicMVC.Data
             await EnsureUserHasRole(userManager, "s3379758@student.rmit.edu.au", Constants.OwnerRole);
             await EnsureUserHasRole(userManager, "franchisee@example.com", Constants.FranchiseeRole);
             await EnsureUserHasRole(userManager, "antfellow@gmail.com", Constants.FranchiseeRole);
+            await EnsureUserHasRole(userManager, "customer@example.com", Constants.CustomerRole);
         }
         private static async Task EnsureUserHasRole(
         UserManager<ApplicationUser> userManager, string userName, string role)

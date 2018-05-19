@@ -40,7 +40,7 @@ namespace MagicMVC.Controllers
 
         // GET: Store Index - shows inventory for the user's store.
 
-        public async Task<IActionResult> Index(string productName)
+        public async Task<IActionResult> Index(string productName, int threshold, int id = 1)
         {
             FetchStore();
             int storeID = Store.StoreID;
@@ -63,6 +63,13 @@ namespace MagicMVC.Controllers
                 ViewBag.ProductName = productName;
             }
 
+            if (threshold != 0)
+            {
+                inventory = await franchisee.GetStoreInventoryBelowThreshold(threshold);
+
+                // Storing the search into ViewBag to populate the textbox with the same value for convenience.
+                ViewBag.Threshold = threshold;
+            }
 
             //Passing a List<OwnerInventory> model object to the View.
 

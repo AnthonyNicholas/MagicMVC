@@ -1,0 +1,50 @@
+﻿@model IEnumerable<MagicMVC.Models.StockRequestOwnerViewModel>
+
+@{
+    ViewData["Title"] = "Stock Request Index";
+}
+
+<h2>Franchisee - Stock Requests</h2>
+
+<form method="get">
+    <p>
+        Product Name: <input name="productName" value="@ViewBag.ProductName" />
+        <input type="submit" value="Filter" />
+    </p>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.StockRequestID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quantity)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StockRequestID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td>
+                    <a asp-action="Create" asp-route-id="@item.StockRequestID">Make StockRequest</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
