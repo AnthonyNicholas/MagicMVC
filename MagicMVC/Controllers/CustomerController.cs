@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MagicMVC.Models;
 using MagicMVC.Data;
+using Newtonsoft.Json;
 
 namespace MagicMVC.Controllers
 {
@@ -62,7 +63,10 @@ namespace MagicMVC.Controllers
         // GET: Customer/History
         public async Task<IActionResult> History()
         {
-            var productQuery = _context.Purchases.Include(s => s.Product).Include(s => s.Store).Where(p => p.UserID == _userManager.GetUserId(User));
+            var productQuery = _context.Purchases
+                .Include(s => s.Product)
+                .Include(s => s.Store)
+                .Where(p => p.CustomerID == _userManager.GetUserId(User) && p.Confirmed);
 
             return View(await productQuery.ToListAsync());
         }
