@@ -43,7 +43,7 @@ namespace MagicMVC.Models
 
         }
 
-        public async Task ProcessCart()
+        public async Task<List<Purchase>> ProcessCart()
         {
             var query = _context.Purchases
                                     .Where(x => x.CustomerID == this.ID)
@@ -74,6 +74,8 @@ namespace MagicMVC.Models
                     //Confirm purchase on screen
                 }
             }
+
+            return purchaseList;
         }
     }
 }

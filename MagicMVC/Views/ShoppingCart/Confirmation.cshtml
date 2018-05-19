@@ -1,0 +1,64 @@
+﻿@model IEnumerable<MagicMVC.Models.Purchase>
+
+@{
+    ViewBag.Title = "Payment Received";
+}
+
+<h2>Payment Received</h2>
+
+Thank you for your purchase!
+
+<div class="form-horizontal">
+    <div class="form-group">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PurchaseID)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Store.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Product.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.QuantityToPurchase)
+                    </th>
+                    <th>
+                        Price per Unit
+                    </th>
+                    <th>
+                        Price
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PurchaseID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Store.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Product.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.QuantityToPurchase)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Product.Price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SubTotal)
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

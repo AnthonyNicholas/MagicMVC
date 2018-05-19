@@ -103,8 +103,8 @@ namespace MagicMVC.Controllers
                 return View(creditCardForm);
             }
 
-            await customer.ProcessCart();
-            return View("PaymentReceived");
+            var purchaseList = await customer.ProcessCart();
+            return View("Confirmation", purchaseList);
         }
 
     }
