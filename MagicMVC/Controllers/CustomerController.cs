@@ -63,10 +63,8 @@ namespace MagicMVC.Controllers
         // GET: Customer/History
         public async Task<IActionResult> History()
         {
-            var productQuery = _context.Purchases
-                .Include(s => s.Product)
-                .Include(s => s.Store)
-                .Where(p => p.CustomerID == _userManager.GetUserId(User) && p.Confirmed);
+            var productQuery = _context.Orders
+                .Where(o => o.CustomerID == _userManager.GetUserId(User));
 
             return View(await productQuery.ToListAsync());
         }
