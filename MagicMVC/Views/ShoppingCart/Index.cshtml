@@ -32,37 +32,43 @@
             <tbody>
                 @foreach (var item in Model)
                 {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Store.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Product.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.QuantityToPurchase)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Product.Price)
-                    </td>
-                    <td>
-                        $@Html.DisplayFor(modelItem => item.SubTotal)
-                    </td>
-                    <td>
-                        <a asp-action="Delete" asp-route-id="@item.PurchaseID">Delete</a>
-                    </td>
-                </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Store.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Product.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.QuantityToPurchase)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Product.Price)
+                        </td>
+                        <td>
+                            $@Html.DisplayFor(modelItem => item.SubTotal)
+                        </td>
+                        <td>
+                            <a asp-action="Delete" asp-route-id="@item.PurchaseID">Delete</a>
+                        </td>
+                    </tr>
                 }
             </tbody>
         </table>
     </div>
-    @if (ViewBag.numPurchases != 0) 
-    { 
-        <div class="form-group">
-            <div class="btn btn-default pull-right">
-                <a asp-action="Pay">Proceed to Payment</a>
-            </div>
+    @if (ViewBag.numPurchases != 0)
+    {
+    <div class="form-group">
+        <div class="pull-right">
+            <h4><b>Total Price:</b> $@ViewData["TotalPrice"] </h4>
         </div>
+        <br />
+        <br />
+        <br />
+        <div class="btn btn-default pull-right">
+            <a asp-action="Pay">Proceed to Payment</a>
+        </div>
+    </div>
     }
 </div>
 

@@ -37,14 +37,9 @@ namespace MagicMVC.Controllers
         // GET: ShoppingCart
         public async Task<IActionResult> Index()
         {
-            var query = _context.Purchases
-                            .Where(x => x.CustomerID == customer.ID)
-                            .Where(x => x.Confirmed == false)
-                            .Include(x => x.Store)
-                            .Include(x => x.Product);
-            ViewBag.numPurchases = (await query.ToListAsync()).Count;
-
-            return View(await query.ToListAsync());
+            var purchaseList = await customer.GetCartItems();
+            ViewData["TotalPrice"] = decimal.Round(purchaseList.Sum(p => p.SubTotal), 2);
+            return View(purchaseList);
         }
 
         // GET: ShoppingCart/Delete/5
@@ -84,8 +79,10 @@ namespace MagicMVC.Controllers
         }
 
         // GET: PaymentPage
-        public ActionResult Pay()
+        public async Task<IActionResult> Pay()
         {
+            var purchaseList = await customer.GetCartItems();
+            ViewData["TotalPrice"] = decimal.Round(purchaseList.Sum(p => p.SubTotal), 2);
             return View(new CreditCardForm { CreditCardType = CardType.MasterCard });
         }
 

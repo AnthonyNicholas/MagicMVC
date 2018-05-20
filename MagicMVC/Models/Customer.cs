@@ -77,5 +77,20 @@ namespace MagicMVC.Models
 
             return purchaseList;
         }
+
+        public async Task<List<Purchase>> GetCartItems()
+        {
+            var query = _context.Purchases
+                                    .Where(x => x.CustomerID == this.ID)
+                                    .Where(x => x.Confirmed == false)
+                                    .Include(x => x.Store)
+                                        .ThenInclude(store => store.StoreInventoryList)
+                                    .Include(x => x.Product);
+
+            List<Purchase> purchaseList = await query.ToListAsync();
+            return purchaseList;
+        }
+
+
     }
 }
