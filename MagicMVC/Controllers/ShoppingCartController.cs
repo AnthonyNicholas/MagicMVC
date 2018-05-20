@@ -108,7 +108,7 @@ namespace MagicMVC.Controllers
             Order order = new Order();
             order.CustomerID = customer.ID;
             order.Date = DateTime.Now;
-            order.TotalPrice = purchaseList.Sum(p => p.SubTotal);
+            order.TotalPrice = decimal.Round(purchaseList.Sum(p => p.SubTotal), 2);
             _context.Update(order);
             await _context.SaveChangesAsync();
 

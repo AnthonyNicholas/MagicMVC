@@ -6,10 +6,11 @@
 
 <h2>Payment Received</h2>
 
-Thank you for your purchase!
-
-<h6>Order Number: @ViewData["orderID"]</h6>
-<h6>Date: @ViewData["Date"]</h6>
+<h5>Thank you for your purchase!</h5>
+<br/>
+<br/>
+<h5>Order Number: @ViewData["orderID"]</h5>
+<h5>Date: @ViewData["Date"]</h5>
 
 
 <div class="form-horizontal">
@@ -65,5 +66,8 @@ Thank you for your purchase!
             </tbody>
         </table>
     </div>
-    <h4>Total Price: $@ViewData["TotalPrice"] </h4>
+    <br />
+    <div class="pull-right">
+        <h4>Total Price: $@ViewData["TotalPrice"] </h4>
+    </div>
 </div>

@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<MagicMVC.Models.Purchase>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Shopping Cart";
 }
 
 <h2>Shopping Cart</h2>
@@ -46,7 +46,7 @@
                         @Html.DisplayFor(modelItem => item.Product.Price)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.SubTotal)
+                        $@Html.DisplayFor(modelItem => item.SubTotal)
                     </td>
                     <td>
                         <a asp-action="Delete" asp-route-id="@item.PurchaseID">Delete</a>
