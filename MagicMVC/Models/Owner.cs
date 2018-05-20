@@ -68,7 +68,7 @@ namespace MagicMVC.Models
                                     SingleOrDefaultAsync(r => r.ProductID == s.ProductID);
 
             var storeItem = await _context.StoreInventory.
-                                    Where(r => r.StoreID == r.StoreID).
+                                    Where(r => r.StoreID == s.StoreID).
                                     SingleOrDefaultAsync(r => r.ProductID == s.ProductID);
 
             //Add product to store if not currently in Inventory.

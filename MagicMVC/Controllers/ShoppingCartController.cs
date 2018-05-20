@@ -42,6 +42,7 @@ namespace MagicMVC.Controllers
                             .Where(x => x.Confirmed == false)
                             .Include(x => x.Store)
                             .Include(x => x.Product);
+            ViewBag.numPurchases = (await query.ToListAsync()).Count;
 
             return View(await query.ToListAsync());
         }
@@ -55,7 +56,9 @@ namespace MagicMVC.Controllers
             }
 
             var purchase = await _context.Purchases
-                .SingleOrDefaultAsync(m => m.PurchaseID == id);
+                            .Include(p => p.Product)
+                            .Include(p => p.Store)
+                            .SingleOrDefaultAsync(m => m.PurchaseID == id);
             if (purchase == null)
             {
                 return NotFound();

@@ -20,14 +20,14 @@ namespace MagicMVC.Controllers
 
         public IActionResult About()
         {
-            ViewData["Message"] = "Melbourne Magic - Two rabbits in every hat.";
+            ViewData["Message"] = "Melbourne Magic";
 
             return View();
         }
 
         public IActionResult Contact()
         {
-            ViewData["Message"] = "Melbourne Magic - Contact Page.";
+            ViewData["Message"] = "Melbourne Magic";
 
             return View();
         }

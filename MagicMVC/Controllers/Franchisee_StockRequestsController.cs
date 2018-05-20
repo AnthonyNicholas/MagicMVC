@@ -55,27 +55,6 @@ namespace MagicMVC.Controllers
             return View(await query.ToListAsync());
         }
 
-        // GET: Franchisee_StockRequests/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var stockRequest = await _context.StockRequests
-                .Include(s => s.Product)
-                .Include(s => s.Store)
-                .Include(s => s.StoreInventory)
-                .SingleOrDefaultAsync(m => m.StockRequestID == id);
-            if (stockRequest == null)
-            {
-                return NotFound();
-            }
-
-            return View(stockRequest);
-        }
-
         // GET: Franchisee_StockRequests/Create
         public IActionResult Create()
         {
@@ -102,95 +81,6 @@ namespace MagicMVC.Controllers
             ViewData["StoreID"] = new SelectList(_context.Stores, "StoreID", "StoreID", stockRequest.StoreID);
             ViewData["StoreID"] = new SelectList(_context.StoreInventory, "StoreID", "StoreID", stockRequest.StoreID);
             return View(stockRequest);
-        }
-
-        // GET: Franchisee_StockRequests/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var stockRequest = await _context.StockRequests.SingleOrDefaultAsync(m => m.StockRequestID == id);
-            if (stockRequest == null)
-            {
-                return NotFound();
-            }
-            ViewData["ProductID"] = new SelectList(_context.Products, "ProductID", "ProductID", stockRequest.ProductID);
-            ViewData["StoreID"] = new SelectList(_context.Stores, "StoreID", "StoreID", stockRequest.StoreID);
-            ViewData["StoreID"] = new SelectList(_context.StoreInventory, "StoreID", "StoreID", stockRequest.StoreID);
-            return View(stockRequest);
-        }
-
-        // POST: Franchisee_StockRequests/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("StockRequestID,StoreID,ProductID,Quantity")] StockRequest stockRequest)
-        {
-            if (id != stockRequest.StockRequestID)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(stockRequest);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!StockRequestExists(stockRequest.StockRequestID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["ProductID"] = new SelectList(_context.Products, "ProductID", "ProductID", stockRequest.ProductID);
-            ViewData["StoreID"] = new SelectList(_context.Stores, "StoreID", "StoreID", stockRequest.StoreID);
-            ViewData["StoreID"] = new SelectList(_context.StoreInventory, "StoreID", "StoreID", stockRequest.StoreID);
-            return View(stockRequest);
-        }
-
-        // GET: Franchisee_StockRequests/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var stockRequest = await _context.StockRequests
-                .Include(s => s.Product)
-                .Include(s => s.Store)
-                .Include(s => s.StoreInventory)
-                .SingleOrDefaultAsync(m => m.StockRequestID == id);
-            if (stockRequest == null)
-            {
-                return NotFound();
-            }
-
-            return View(stockRequest);
-        }
-
-        // POST: Franchisee_StockRequests/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var stockRequest = await _context.StockRequests.SingleOrDefaultAsync(m => m.StockRequestID == id);
-            _context.StockRequests.Remove(stockRequest);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
         }
 
         private bool StockRequestExists(int id)

@@ -5,12 +5,10 @@
 }
 
 <h2>Payment Received</h2>
-
 <h5>Thank you for your purchase!</h5>
-<br/>
-<br/>
-<h5>Order Number: @ViewData["orderID"]</h5>
-<h5>Date: @ViewData["Date"]</h5>
+<br />
+<h5><b>Order Number: </b> @ViewData["orderID"]</h5>
+<h5><b> Date: </b> @ViewData["Date"]</h5>
 
 
 <div class="form-horizontal">
@@ -59,7 +57,7 @@
                             @Html.DisplayFor(modelItem => item.Product.Price)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.SubTotal)
+                            $@Html.DisplayFor(modelItem => item.SubTotal)
                         </td>
                     </tr>
                 }
@@ -67,7 +65,8 @@
         </table>
     </div>
     <br />
-    <div class="pull-right">
-        <h4>Total Price: $@ViewData["TotalPrice"] </h4>
-    </div>
 </div>
+<div class="pull-right">
+    <h4><b>Total Price:</b> $@ViewData["TotalPrice"] </h4>
+</div>
+
