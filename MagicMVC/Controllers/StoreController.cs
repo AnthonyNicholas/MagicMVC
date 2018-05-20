@@ -35,7 +35,9 @@ namespace MagicMVC.Controllers
             var claimsIdentity = User.Identity as ClaimsIdentity;
             UserID = claimsIdentity.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
 
-            Store = _context.Stores.FirstOrDefault(s => s.FranchiseeUser == UserID);
+            Store = _context.Stores
+                        .Include(s => s.StoreInventoryList)
+                        .FirstOrDefault(s => s.FranchiseeUser == UserID);
         }
 
         
