@@ -66,8 +66,8 @@ namespace MagicMVC
             if (env.IsDevelopment())
             {
                 app.UseBrowserLink();
-                //app.UseExceptionHandler("/Home/Error");
-                app.UseDeveloperExceptionPage();
+                app.UseExceptionHandler("/Home/Error");
+                //app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
             }
             else

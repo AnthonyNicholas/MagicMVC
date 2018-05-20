@@ -111,7 +111,8 @@ namespace MagicMVC.Controllers
                     var numInStock = await franchisee.getStockLevel(p.ProductID);
                     if (numInStock < p.QuantityToPurchase)
                     {
-                        throw new Exception("Sorry, we don't have enough stock.  Please give us a call.");
+                        //return View;
+                        throw new Exception();
                     }
                     await customer.SaveToCart(p);
                 }
