@@ -31,12 +31,6 @@ namespace MagicMVC.Controllers
             franchisee = new Franchisee(_context);
         }
 
-        //protected override void Initialize(System.Web.Routing.RequestContext rContext, )
-        //{
-
-        //}
-
-
         // GET: Customer
         public async Task<IActionResult> Index(string productName, string storeName)
         {

@@ -16,8 +16,6 @@ namespace MagicMVC.Models
     public class Owner
     {
         private readonly MagicMVCContext _context;
-        //public List<OwnerInventory> OwnerInventoryList { get; set; }
-        //public ICollection<StockRequest> StockRequestList { get; set; } = new List<StockRequest>();
 
         public Owner(MagicMVCContext context)
         {
@@ -37,7 +35,7 @@ namespace MagicMVC.Models
 
             var query = _context.OwnerInventory                 
                             .Include(x => x.Product)
-                            .Where(x => x.ProductID == productID); //Throws exception here
+                            .Where(x => x.ProductID == productID); 
             var list = await query.ToListAsync();
 
             return list;
@@ -54,7 +52,7 @@ namespace MagicMVC.Models
 
         public async Task<bool> IsStockAvailable(StockRequest s)
         {
-            var query = await GetOwnerInventory(s.ProductID);  //Throws exception here
+            var query = await GetOwnerInventory(s.ProductID);  
             OwnerInventory item = query.First();
             var test = item.StockLevel;
             return item.StockLevel >= s.Quantity;
@@ -62,8 +60,6 @@ namespace MagicMVC.Models
 
         public async Task PerformStockRequest(StockRequest s)
         {
-            //Franchisee franchisee = new Franchisee(_context, s.StoreID);
-
             var ownerItem = await _context.OwnerInventory.
                                     SingleOrDefaultAsync(r => r.ProductID == s.ProductID);
 

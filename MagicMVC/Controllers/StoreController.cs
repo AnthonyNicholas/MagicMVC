@@ -70,8 +70,6 @@ namespace MagicMVC.Controllers
             List<StoreInventory> inventory = await franchisee.GetStoreInventory();
             
             // Eager loading the Product table - join between StoreInventory and the Product table.
-            //var storeQuery = await _context.Stores.Where(s => s.StoreID == id).ToListAsync();
-            //var store = storeQuery.First();
 
             var productQuery = _context.StoreInventory.Include(x => x.Product).Where(p => p.StoreID == storeID);
 
