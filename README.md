@@ -1,7 +1,6 @@
 # MagicMVC
-MagicMVC
 
-This is a .net core MVC project that provides a stock system for a franchise.  
+This is a .net core MVC university project that provides a stock system for a Company that runs a Magic Store franchise.  
 
 Features:
 
